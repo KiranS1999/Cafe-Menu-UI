@@ -30,7 +30,7 @@ def productmenu():
     4. Delete a product''')
     
     x = int(input("Please enter menu number: "))
-    
+    #Enter input
     if x == 0:
         mainmenu()
     
