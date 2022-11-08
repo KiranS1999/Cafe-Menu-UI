@@ -1,3 +1,4 @@
 customer_name,customer_address,customer_phone,courier_index,order_status,product_index
-John, whitehall lane, 9999999999, 2, preparing, '1 2 3'
-Michael, Scothall street, 888888888, 1, preparing, '4 5'
+John,whitehall lane,888888899999,3,Dispatched,"1,2,3"
+Michael,Scothall street,888888888,1,preparing,"4,5"
+jack,64 zoo lane,1212121212,1,Preparing,"2,3,4"

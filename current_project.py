@@ -64,9 +64,21 @@ def productmenu():
         
         try:
             user_index = int(input('Index value of the product you wish to update: ')) 
-            new_name = input('New product name: ')
-            products[user_index] = new_name 
-            print(products)
+            product_to_change = products[user_index]
+            for key, value in product_to_change.items():
+                print(key, ':', value)
+            product_new = input('What is the new product name?: ')  
+            price_new = input('What is the new price?: ')
+            if product_new == '': 
+                print('Product name will not be updated')
+            else:
+                product_to_change['Product'] = product_new
+
+            if price_new == '': 
+                print('Price will not be updated')
+            else:
+                product_to_change['Price'] = price_new    
+
         except IndexError:
             print('You have selected an unavailable index, please try again')
             productmenu()
@@ -121,7 +133,7 @@ def order_status_update():
     try:
         new_status = int(input('What is the new order status?(Type 0-3): '))
         updated_status = order_status_list[new_status]
-        order_to_change.update({'Order status': updated_status})
+        order_to_change.update({'order_status': updated_status})
         print('The current order list:') 
         print(orders)  
     except IndexError as e:
@@ -176,7 +188,6 @@ def mainmenu():
                 w = csv.DictWriter(file, fieldnames = ['Product', 'Price'])
                 w.writeheader()
                 w.writerows(products)
-                print(products)
                 file.close()
         
             def save_order_list():
@@ -219,32 +230,49 @@ def mainmenu():
             elif x == 2:
                 #create a new courier
                 new_courier = input('What is the name of the new courier?: ')
-                couriers.append(new_courier)
-            elif x == 3:
-                print("List index-value are : ")
+                new_phone = input('Please enter their phone number: ')
+                new_courier_dict = {'Name': new_courier, 'Phone': new_phone}
+                couriers.append(new_courier_dict)
+                print(couriers)
             
+            elif x == 3:
+                print ("List index-value are : ")
+        
                 for index, value in enumerate(couriers):
                     print(index, value)
                 
                 try:
-                    user_index = int(input('Index value of the courier you wish to update: ')) 
-                    new_name = input('New courier name: ')
-                    couriers[user_index] = new_name 
-                    print(couriers)
+                    user_index = int(input('Index value of the product you wish to update: ')) 
+                    courier_to_change = couriers[user_index]
+                    for key, value in courier_to_change.items():
+                        print(key, ':', value)
+                    courier_new = input('What is the new courier name?: ')  
+                    phone_new = input('What is the new phone number?: ')
+                    if courier_new == '': 
+                        print('Name will not be updated')
+                    else:
+                        courier_to_change['Name'] = courier_new
+
+                    if phone_new == '': 
+                        print('Phone number will not be updated')
+                    else:
+                        courier_to_change['Phone'] = phone_new    
+
                 except IndexError:
                     print('You have selected an unavailable index, please try again')
-                    mainmenu()
+                    productmenu()
                 except ValueError as v:
                     print('You have not entered a valid index, please try again!') 
-                    mainmenu()
+                    productmenu()   
+                
             
             elif x == 4:
-            #delete a product    
+            #delete a courier    
                 for index, value in enumerate(couriers):
                     print(index, value)
                 
                 try:
-                    user_index = int(input('Please type the index value of the product you wish to delete: '))    
+                    user_index = int(input('Please type the index value of the courier you wish to delete: '))    
                     del couriers[user_index]
                     print(couriers) 
                 except IndexError as e:
@@ -268,7 +296,21 @@ def mainmenu():
                 mainmenu()
             elif x == 1:
                 #view orders
-                print(orders)
+                import operator
+                list_orders= [Status, Courier, Original]
+                for index, value in enumerate(list_orders):
+                    print(index, value)
+                user_input = input('What key would you like to sort by?: ')
+                if user_input == 0:
+                    orders.sort(key=operator.itemgetter('order_status'))
+                    print(orders)
+                elif user_input == 1:
+                    orders.sort(key=operator.itemgetter('courier_index'))
+                    print(orders)
+                elif user_input == 2:
+                    print(orders)  
+                
+
             elif x == 2:
                 #create a new order
                 new_orders = {}
@@ -278,8 +320,37 @@ def mainmenu():
                 new_orders['customer_address'] = customer_address
                 customer_phone = input('Please type the customer phone number: ')
                 new_orders['customer_phone'] = customer_phone
-                new_orders['Order status'] = 'Preparing'
+                
+
+                #add courier to the order 
+                print ("Courier list index-value are : ")
+                for index, value in enumerate(couriers):
+                    print(index, value)   
+
+                courier_add = input('Please type the index of the courier you would like to attach to this order: ')
+                new_orders['courier_index']= courier_add 
+
+                #order status to preparing
+                new_orders['Order status'] = 'Preparing'  
+
+                #print products list with index values and get user input for what products they want
+                print ("Product list index-value are : ")
+                for index, value in enumerate(products):
+                    print(index, value)
+                product_index = []
+                while True:
+                    user_input = input('What products would you like to add to this order? Type done to exit: ')
+                    if user_input == 'done':
+                        break
+                    else:
+                        product_index.append(user_input)
+                prod_index_str = ','.join(str(item) for item in product_index)
+                new_orders['product_index']=prod_index_str     
+
+
                 orders.append(new_orders)
+
+
                 print('The current order list:')
                 print(orders)
             elif x == 3:
