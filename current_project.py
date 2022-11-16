@@ -38,9 +38,7 @@ orders = []
 
 
 
-
-
-#FUNCTION: Loading data through csv
+#FUNCTION: Loading order data through csv
 def load_order_data():            
     # LOAD orders from orders.csv
     with open('orders.csv', 'r') as fhand:
@@ -49,7 +47,7 @@ def load_order_data():
             orders.append(dict(row))
 
 
-#FUNCTIONS: Save data to csv
+#FUNCTIONS: Save order data to csv
 
 def save_order_list():
     file = open('./orders.csv', 'w')
@@ -78,6 +76,13 @@ def create_product ():
     val = (newprod, newprice)
     cursor.execute(sql, val)
     connection.commit()
+    
+    #log new product
+    sql = "INSERT INTO created_products (Name, Price) VALUES (%s, %s)"
+    val = (newprod, newprice)
+    cursor.execute(sql, val)
+    connection.commit()
+    
 
 
 #FUNCTION: update a product
@@ -89,10 +94,12 @@ def update_product():
     prod_id = input('Index value of the product you wish to update: ')
     prod_name = input('What is the new product name?: ') 
     prod_price = input('What is the new price?: ')
+    
 
     if prod_name == '': 
         print('Product name will not be updated')
     else:
+
         sql = "UPDATE products SET name = %s WHERE id = %s"
         val = (prod_name, prod_id)
         cursor.execute(sql, val)
@@ -104,8 +111,21 @@ def update_product():
         sql = "UPDATE products SET price = %s WHERE id = %s"
         val = (prod_price, prod_id)
         cursor.execute(sql, val)
-        connection.commit()  
+        connection.commit() 
 
+    #log updated product
+    sql = 'SELECT name, price FROM products WHERE id = %s'
+    val = (prod_id)
+    cursor.execute(sql, val)
+    myresult = cursor.fetchone()
+    for result in myresult:
+        old_prod = row[1]
+        old_price = row[2]
+    sql = "INSERT INTO updated_products (Name, Price, New_Name, New_Price) VALUES (%s, %s, %s, %s)"
+    val = (old_prod, old_price, prod_name, prod_price)
+    cursor.execute(sql, val)
+    connection.commit()    
+    
 
 
 
@@ -114,13 +134,61 @@ def delete_product():
     cursor.execute('SELECT id, name, price FROM products') 
     rows = cursor.fetchall()
     for row in rows:
+        del_prod_name = row[1]
+        del_prod_price = row[2]
         print(f'Product ID: {row[0]}, Name: {row[1]}, Price: {row[2]}')
     prod_id = input('Index value of the product you wish to delete: ')
     sql = "DELETE FROM products WHERE id=%s"
     val = (prod_id)
     cursor.execute(sql, val)
-    connection.commit()  
+    connection.commit() 
+    
+    #log deleted product
+    sql = "INSERT INTO deleted_products (Name, Price) VALUES (%s, %s)"
+    val = (del_prod_name, del_prod_price)
+    cursor.execute(sql, val)
+    connection.commit()
+     
 
+
+
+#FUNCTION: track product inventory
+
+
+def track_prod_inventory():
+    print("The current product list is as follows: ")
+    cursor.execute('SELECT id, name, price FROM products') 
+    rows = cursor.fetchall()
+    for row in rows:
+        print(f'Product ID: {row[0]}, Name: {row[1]}, Price: {row[2]}')
+
+    print('''
+             Created products [1]
+             Updated products [2]
+             Products added to orders [3]
+             Deleted products [4]''')
+    user_input = int(input('What would you like to see?: '))    
+    
+    if user_input == 1:
+        cursor.execute('SELECT * FROM created_products') 
+        rows = cursor.fetchall()
+        for row in rows:
+            print(f'Name: {row[1]}, Price: {row[2]}')
+    elif user_input == 2: 
+        cursor.execute('SELECT * FROM updated_products') 
+        rows = cursor.fetchall()
+        for row in rows:
+            print(f'Name: {row[1]}, Price: {row[2]}, New Name: {row[3]}, New Price: {row[4]} ')
+    elif user_input == 3: 
+        cursor.execute('SELECT * FROM ordered_products') 
+        rows = cursor.fetchall()
+        for row in rows:
+            print(f'Products: {row[1]}')
+    elif user_input == 4: 
+        cursor.execute('SELECT * FROM deleted_products') 
+        rows = cursor.fetchall()
+        for row in rows:
+            print(f'Name: {row[1]}, Price: {row[2]}')
 
 
 
@@ -250,6 +318,14 @@ def new_order():
     print(new_orders)    
     orders.append(new_orders)
 
+    #track products appended to an order
+    sql = "INSERT INTO ordered_products (products) VALUES (%s)"
+    val = (prod_index_str)
+    cursor.execute(sql, val)
+    connection.commit()
+
+
+
 
 #FUNCTION: update the order status of a product
 def update_order_status():
@@ -367,7 +443,8 @@ def mainmenu():
             1. View products
             2. Create a new product
             3. Update a product
-            4. Delete a product''')
+            4. Delete a product
+            5. Track product inventory''')
             
             x = int(input("Please enter menu number: "))
             
@@ -392,6 +469,9 @@ def mainmenu():
             elif x == 4:
             #delete a product    
                 delete_product()
+
+            elif x == 5:
+                track_prod_inventory()    
             
             else:
                 print('You have not entered a valid sub-menu number, please try again') 
