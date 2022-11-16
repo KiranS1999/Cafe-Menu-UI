@@ -33,6 +33,11 @@ def load_order_data():
         for row in order_file:
             orders.append(dict(row))
 
+#empty list of orders,products and couriers to be written to a csv file
+orders = []
+products = [] 
+couriers = []
+
 
 #FUNCTIONS: Save data to csv
 def save_product_list():
@@ -367,73 +372,6 @@ connection = pymysql.connect(
 )
 
 cursor = connection.cursor()
-
-
-
-
-
-#create a list of products from an incoming csv file
-orders = []
-products = [] 
-couriers = []
-
-
-
-#FUNCTION: Loading data through csv
-
-def load_product_data():
-    # LOAD products from products.csv
-    with open('products.csv', 'r') as f:
-        product_file = csv.DictReader(f)
-        for row in product_file:
-            products.append(dict(row))
-
-def load_courier_data():    
-    # LOAD couriers from couriers.csv
-    with open('couriers.csv', 'r') as file:
-        courier_file = csv.DictReader(file)
-        for row in courier_file:
-            couriers.append(dict(row))
-
-def load_order_data():            
-    # LOAD orders from orders.csv
-    with open('orders.csv', 'r') as fhand:
-        order_file = csv.DictReader(fhand)
-        for row in order_file:
-            orders.append(dict(row))
-
-
-#FUNCTIONS: Save data to csv
-
-def save_product_list():
-    file = open('products.csv', 'w')
-    w = csv.DictWriter(file, fieldnames = ['Product', 'Price'])
-    w.writeheader()
-    w.writerows(products)
-    file.close()
-
-def save_order_list():
-    file = open('./orders.csv', 'w')
-    w = csv.writer(file)
-    w.writerow(['customer_name', 'customer_address', 'customer_phone', 'courier_index', 'order_status', 'product_index'])
-    for dictionary in orders:
-        w.writerow(dictionary.values())
-    file.close()   
-
-def save_courier_list():
-    file = open('./couriers.csv', 'w')
-    w = csv.writer(file)
-    w.writerow(['Name', 'Phone'])
-    for dictionary in couriers:
-        w.writerow(dictionary.values())
-    file.close()   
-
-
-
-
-
-
-
 
 
 
