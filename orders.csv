@@ -1,10 +1,5 @@
 customer_name,customer_address,customer_phone,courier_index,order_status,product_index
-
 John,whitehall lane,888888899999,3,Dispatched,"1,2,3"
-
 Michael,Scothall street,888888888,2,preparing,"4,5"
-
 jack,64 zoo lane,1212121212,4,preparing,"2,3,4"
-
 Samantha,54 Conway Lane,01234567891,4,preparing,"3,4,5"
-

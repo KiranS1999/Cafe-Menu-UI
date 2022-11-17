@@ -1,9 +1,11 @@
-#Program: A menu system that allows user to view and amend the products and orders for a cafe
+#PROGRAM: A menu system that allows user to view, create, amend and delete 
+#the products, couriers and orders for a cafe 
+#using either CSV files or a database
 
 
 #Libraries
 import csv
-import operator
+import pandas as pd
 import pymysql
 import os
 from dotenv import load_dotenv
@@ -11,67 +13,70 @@ from dotenv import load_dotenv
 
 ######CSV-RELATED FUNCTIONS######
 
-#FUNCTION: Loading data through csv
-def load_product_data():
-    # LOAD products from products.csv
-    with open('products.csv', 'r') as f:
-        product_file = csv.DictReader(f)
-        for row in product_file:
-            products.append(dict(row))
-
-def load_courier_data():    
-    # LOAD couriers from couriers.csv
-    with open('couriers.csv', 'r') as file:
-        courier_file = csv.DictReader(file)
-        for row in courier_file:
-            couriers.append(dict(row))
-
-def load_order_data():            
-    # LOAD orders from orders.csv
-    with open('orders.csv', 'r') as fhand:
-        order_file = csv.DictReader(fhand)
-        for row in order_file:
-            orders.append(dict(row))
-
 #empty list of orders,products and couriers to be written to a csv file
 orders = []
 products = [] 
 couriers = []
 
 
+#FUNCTION: Loading data through csv
+def load_product_data():
+    # LOAD products from products.csv
+    with open("products.csv", "r", newline = '') as file:
+        product_file = csv.DictReader(file)
+        for row in product_file:
+            products.append(dict(row))
+    file.close()    
+           
+def load_courier_data():    
+    # LOAD couriers from couriers.csv
+    with open("couriers.csv", "r", newline = '') as file:
+        courier_file = csv.DictReader(file)
+        for row in courier_file:
+            couriers.append(dict(row))       
+    file.close()    
+
+def load_order_data():            
+    # LOAD orders from orders.csv
+    with open("orders.csv", "r", newline = '') as file:
+        order_file = csv.DictReader(file)
+        for row in order_file:
+            orders.append(dict(row))
+    file.close()    
+
+
 #FUNCTIONS: Save data to csv
 def save_product_list():
-    file = open('products.csv', 'w')
-    w = csv.DictWriter(file, fieldnames = ['Product', 'Price'])
-    w.writeheader()
-    w.writerows(products)
-    file.close()
+    with open("products.csv", mode="w", newline = '') as file:
+        w = csv.DictWriter(file, fieldnames = ['Product', 'Price'])
+        w.writeheader()
+        w.writerows(products) 
+        file.close()
 
 def save_order_list():
-    file = open('./orders.csv', 'w')
-    w = csv.writer(file)
-    w.writerow(['customer_name', 'customer_address', 'customer_phone', 'courier_index', 'order_status', 'product_index'])
-    for dictionary in orders:
-        w.writerow(dictionary.values())
-    file.close()   
+    with open("orders.csv", "w", newline = '') as file:
+        w = csv.DictWriter(file, fieldnames = ['customer_name', 'customer_address', 'customer_phone', 'courier_index', 'order_status', 'product_index'])
+        w.writeheader()
+        w.writerows(orders)
+        file.close()   
 
 def save_courier_list():
-    file = open('./couriers.csv', 'w')
-    w = csv.writer(file)
-    w.writerow(['Name', 'Phone'])
-    for dictionary in couriers:
-        w.writerow(dictionary.values())
-    file.close()   
+    with open("couriers.csv", "w", newline = '') as file:
+        w = csv.DictWriter(file, fieldnames = ['Name', 'Phone'])
+        w.writeheader()
+        w.writerows(couriers)
+        file.close()   
 
 
 
 
 
+#PRODUCT-RELATED FUNCTIONS#
 
-
-
-
-#PRODUCT-RELATED FUNCTIONS
+#FUNCTION: View products with pandas
+def view_products_csv():
+    df = pd.read_csv('products.csv')
+    print(df.to_string()) 
 
 #FUNCTION: create a new product to csv
 def create_product_csv():
@@ -114,13 +119,14 @@ def update_product_csv():
 
 #FUNCTION: delete a product to csv
 def delete_product_csv():
-    for index, value in enumerate(products):
-                print(index, value)
+    
+    view_products_csv()
             
     try:
         user_index = int(input('Please type the index value of the product you wish to delete: '))    
         del products[user_index]
-        print(products) 
+        
+
     except IndexError as e:
         print('You have selected an unavailable index, please try again')
         delete_product_csv()  
@@ -128,20 +134,20 @@ def delete_product_csv():
         print('You have not entered a valid index, please try again!')
         delete_product_csv()                 
 
-    else:
-        print('You have entered an invalid index number')
 
 
 
 
 
 
+#COURIER-RELATED FUNCTIONS#
 
+#FUNCTION: View couriers with pandas
+def view_couriers_csv():
+    df = pd.read_csv('couriers.csv')
+    print(df.to_string()) 
 
-
-#COURIER-RELATED FUNCTIONS
-
-#Function: create a new courier to csv
+#FUNCTION: create a new courier to csv
 def new_courier_csv():
     new_courier = input('What is the name of the new courier?: ')
     new_phone = input('Please enter their phone number: ')
@@ -149,7 +155,7 @@ def new_courier_csv():
     couriers.append(new_courier_dict)
     print(couriers)
 
-#Function: update a courier to csv
+#FUNCTION: update a courier to csv
 def update_courier_csv():
     print ("List index-value are : ")
         
@@ -202,12 +208,12 @@ def del_courier_csv():
 
 
 
+#ORDER-RELATED FUCNTIONS#
 
-
-
-
-
-#ORDER-RELATED FUCNTIONS
+#FUNCTION: View orders with pandas
+def view_orders_csv():
+    df = pd.read_csv('orders.csv')
+    print(df.to_string()) 
 
 #FUNCTION: sort and view orders by csv
 def sort_orders_csv():
@@ -224,7 +230,6 @@ def sort_orders_csv():
         print(orders)
     elif user_input == '2':
         print(orders)
-
 
 #FUNCTION: create a new order to csv
 def new_order_csv():
@@ -268,7 +273,6 @@ def new_order_csv():
     print('The current order list:')
     print(orders)
 
-
 #FUNCTION: update the order status of a product to csv
 def update_order_status_csv():
     print ("Order list index-values are : ")
@@ -305,7 +309,6 @@ def update_order_status_csv():
     except ValueError as v:
         print('You have not entered a valid index, please try again!')
         update_order_status_csv()
-
 
 #FUNCTION: update entire order to csv
 def update_full_order_csv():
@@ -378,6 +381,13 @@ cursor = connection.cursor()
 
 #PRODUCT-RELATED FUNCTIONS
 
+#FUNCTION: view all products
+def view_products():
+    cursor.execute('SELECT * FROM products')
+    rows = cursor.fetchall()
+    for row in rows:
+        print(f'Name: {str(row[1])}, Price: {row[2]}')
+
 #FUNCTION: create a new product
 def create_product ():
     newprod = input('Please enter your new product name: ')
@@ -393,8 +403,6 @@ def create_product ():
     cursor.execute(sql, val)
     connection.commit()
     
-
-
 #FUNCTION: update a product
 def update_product():
     cursor.execute('SELECT id, name, price FROM products') 
@@ -436,9 +444,6 @@ def update_product():
     cursor.execute(sql, val)
     connection.commit()    
     
-
-
-
 #FUNCTION: delete a product
 def delete_product():
     cursor.execute('SELECT id, name, price FROM products') 
@@ -459,9 +464,6 @@ def delete_product():
     cursor.execute(sql, val)
     connection.commit()
      
-
-
-
 #FUNCTION: track product inventory
 def track_prod_inventory():
     print("The current product list is as follows: ")
@@ -501,11 +503,16 @@ def track_prod_inventory():
 
 
 
-
-
 #COURIER-RELATED FUNCTIONS
 
-#Function: create a new courier
+#FUNCTION: view all couriers
+def view_couriers():
+    cursor.execute('SELECT * FROM couriers')
+    rows = cursor.fetchall()
+    for row in rows:
+        print(f'Name: {str(row[1])}, Phone Number: {row[2]}')
+
+#FUNCTION: create a new courier
 def new_courier():
     new_courier= input('What is the name of the new courier?: ')
     new_phone = input('Please enter their phone number: ')
@@ -514,8 +521,7 @@ def new_courier():
     cursor.execute(sql, val)
     connection.commit()
     
-
-#Function: update a courier
+#FUNCTION: update a courier
 def update_courier():
     cursor.execute('SELECT id, name, phone FROM couriers') 
     rows = cursor.fetchall()
@@ -541,7 +547,6 @@ def update_courier():
         cursor.execute(sql, val)
         connection.commit()  
     
-
 #FUNCTION: delete a courier 
 def del_courier():   
     cursor.execute('SELECT id, name, phone FROM couriers') 
@@ -553,12 +558,6 @@ def del_courier():
     val = (courier_id)
     cursor.execute(sql, val)
     connection.commit()  
-
-
-
-
-
-
 
 
 
@@ -580,7 +579,6 @@ def sort_orders():
         print(orders)
     elif user_input == '2':
         print(orders)
-
 
 #FUNCTION: create a new order
 def new_order():
@@ -632,9 +630,6 @@ def new_order():
     cursor.execute(sql, val)
     connection.commit()
 
-
-
-
 #FUNCTION: update the order status of a product
 def update_order_status():
     print ("Order list index-values are : ")
@@ -671,7 +666,6 @@ def update_order_status():
     except ValueError as v:
         print('You have not entered a valid index, please try again!')
         update_order_status()()
-
 
 #FUNCTION: update entire order
 def update_full_order():
@@ -738,12 +732,12 @@ def mainmenu():
             exit() 
 
         elif data_store_option == 1:
-            load_product_data()
-            load_courier_data()
-            load_order_data()
+            
+            
+            
 
             print ('''Main menu
-            0. Save product, order and courier list
+            0. Return to Main Menu
             1. Products
             2. Couriers
             3. Orders''')
@@ -751,18 +745,15 @@ def mainmenu():
             user_input = int(input("Please enter menu number: "))
             
             if user_input == 0:
-                save_product_list()
-                save_courier_list()
-                save_order_list() 
-                print('Exiting application')
-                exit()   
+                mainmenu() 
 
             elif user_input == 1:
                 print('Product list:')
-                print(products)
+                view_products_csv()
+    
                 print('''Product Menu:
                 0. Return to main menu
-                1. View products
+                1. Load and View products
                 2. Create a new product
                 3. Update a product
                 4. Delete a product''')
@@ -774,19 +765,23 @@ def mainmenu():
                 
                 elif x == 1: 
                 #view products    
-                    print(products)
+                    load_product_data()
+                    view_products_csv()
                 
                 elif x == 2:
                 #create a new product    
                     create_product_csv()
+                    save_product_list()
                 
                 elif x == 3:
                 #update an existing product    
                     update_product_csv()
+                    save_product_list()
                 
                 elif x == 4:
                 #delete a product    
                     delete_product_csv()
+                    save_product_list()
                 
                 else:
                     print('You have not entered a valid sub-menu number, please try again') 
@@ -794,7 +789,7 @@ def mainmenu():
             elif user_input == 2:
                 print('''Courier Menu:
                     0. Return to main menu
-                    1. Print courier list
+                    1. Load and View courier list
                     2. Create a new courier
                     3. Update existing courier
                     4. Delete courier
@@ -806,19 +801,23 @@ def mainmenu():
                     mainmenu()
 
                 elif x == 1:
+                    load_courier_data()
                     print(couriers)
 
                 elif x == 2:
                     #create a new courier
                     new_courier_csv()
+                    save_courier_list()
                 
                 elif x == 3:
                     #update exisitng courier
                     update_courier_csv()
+                    save_courier_list()
                     
                 elif x == 4:
                     #delete a courier
                     del_courier_csv()
+                    save_courier_list()
 
                 else:
                     print('You have not entered a valid sub-menu number, please try again')     
@@ -826,7 +825,7 @@ def mainmenu():
             elif user_input == 3:
                 print('''Order Menu:
                     0. Return to main menu
-                    1. View orders
+                    1. Load, View and Sort orders
                     2. Create a new order
                     3. Update order status
                     4. Update existing order
@@ -839,23 +838,28 @@ def mainmenu():
 
                 elif x == 1:
                     #view and sort orders
+                    load_order_data()
                     sort_orders_csv()  
                     
                 elif x == 2:
                     #create a new order
                     new_order_csv()
+                    save_order_list()
 
                 elif x == 3:
                     #update order status                    
                     update_order_status_csv()
+                    save_order_list()
 
                 elif x == 4:
                     #update an existing order
-                    update_full_order_csv()      
+                    update_full_order_csv()
+                    save_order_list()      
 
                 elif x==5:
                     #delete an existing order
                     del_order_csv()
+                    save_order_list()
 
                 else:
                     print('You have not entered a valid sub-menu number, please try again') 
@@ -894,10 +898,7 @@ def mainmenu():
                 
                 elif x == 1: 
                 #view products    
-                    cursor.execute('SELECT * FROM products')
-                    rows = cursor.fetchall()
-                    for row in rows:
-                        print(f'Name: {str(row[1])}, Price: {row[2]}')
+                    view_products()
                 
                 elif x == 2:
                 #create a new product    
@@ -933,10 +934,7 @@ def mainmenu():
 
                 elif x == 1:
                     #View couriers
-                    cursor.execute('SELECT * FROM couriers')
-                    rows = cursor.fetchall()
-                    for row in rows:
-                        print(f'Name: {str(row[1])}, Phone Number: {row[2]}')
+                    view_couriers()
 
                 elif x == 2:
                     #create a new courier
@@ -991,6 +989,8 @@ def mainmenu():
                     print('You have not entered a valid sub-menu number, please try again') 
             else:
                     print('You have not entered a valid menu number, please try again') 
+        else:
+            print('You have not entered a valid menu number, please try again')
 
 if __name__ == "__main__":
     mainmenu()
