@@ -251,7 +251,7 @@ def new_order_csv():
     new_orders['courier_index']= courier_add 
 
     #order status to preparing
-    new_orders['Order status'] = 'preparing'  
+    new_orders['order_status'] = 'preparing'  
 
     #print products list with index values and get user input for what products they want
     print ("Product list index-value are : ")
@@ -843,6 +843,8 @@ def mainmenu():
                     
                 elif x == 2:
                     #create a new order
+                    load_courier_data()
+                    load_product_data()
                     new_order_csv()
                     save_order_list()
 
@@ -853,6 +855,8 @@ def mainmenu():
 
                 elif x == 4:
                     #update an existing order
+                    load_courier_data()
+                    load_product_data()
                     update_full_order_csv()
                     save_order_list()      
 
