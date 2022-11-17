@@ -1,19 +1,19 @@
 # Generation-Mini-Project
 Creating a cafe order, product and courier menu
 
-How did you meet the client brief? n\
--Maintained a collection of products and couriers in both CSV and databasen n\
--Tracked order information on CSV file n\
--Added feature to update the status of an order n\
--Persisted data via CSV/database n\
--Loaded data from CSV/database n\
+How did you meet the client brief? \
+-Maintained a collection of products and couriers in both CSV and database \
+-Tracked order information on CSV file \
+-Added feature to update the status of an order \
+-Persisted data via CSV/database \
+-Loaded data from CSV/database 
 
-How did you guarantee the client requirements? n\
--Implemented unit testing via mock/patch n\
+How did you guarantee the client requirements? \
+-Implemented unit testing via mock/patch 
 
-If you had more time, what is one thing you would improve upon? n\
--Couriers,orders, products into classes using OOP n\
--Extensive testing n\
+If you had more time, what is one thing you would improve upon? \
+-Couriers,orders, products into classes using OOP \
+-Extensive testing 
 
-What did you most enjoy implementing? n\
+What did you most enjoy implementing? \
 -Creating functions and using them to make a program that could do multiple things 
