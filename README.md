@@ -1,7 +1,7 @@
 # Generation-Mini-Project
 Creating a cafe order, product and courier menu
 
-How did you meet the client brief? \
+How did you meet the client brief? nnnn\
 -Maintained a collection of products and couriers in both CSV and database \
 -Tracked order information on CSV file \
 -Added feature to update the status of an order \
