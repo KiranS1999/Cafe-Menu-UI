@@ -11,6 +11,7 @@ import os
 from dotenv import load_dotenv
 
 
+
 ######CSV-RELATED FUNCTIONS######
 
 #empty list of orders,products and couriers to be written to a csv file
@@ -353,6 +354,7 @@ def del_order_csv():
 
 
 
+
 ######DATABASE-RELATED FUNCTIONS######
 
 
@@ -564,29 +566,60 @@ def del_courier():
 
 #FUNCTION: sort and view orders
 def sort_orders():
-    import operator
-    list_orders= ['Status', 'Courier', 'Original']
+    list_orders= ['Customer', 'Status', 'Courier']
     for index, value in enumerate(list_orders):
         print(index, value)
-    user_input = input('What key would you like to sort by?: ')
-    if user_input == '0':
-        orders.sort(key=operator.itemgetter('order_status'))
-        print(orders)
-    elif user_input == '1':
-        orders.sort(key=operator.itemgetter('courier_index'))
-        print(orders)
-    elif user_input == '2':
-        print(orders)
+    user_input = input('What would you like to sort by?: ')
+    if user_input == '0':    
+        cursor.execute(
+                        '''SELECT orders.name, orders.address, orders.phone, orders.courier, ordered_products.product, ordered_products.quantity, order_status.order_status
+                        FROM orders
+                        JOIN ordered_products
+                        ON orders.id = ordered_products.id_order
+                        JOIN order_status
+                        ON orders.order_status = order_status.ID
+                        ORDER BY orders.name
+                        ''')
+            
+        rows = cursor.fetchall()
+        for row in rows:
+            print(f'Name: {(row[0])}, Address: {row[1]}, Phone Number: {row[2]}, Courier: {row[3]}, Product:{row[4]}, Quantity: {row[5]}, Order Status: {row[6]} ')
+    if user_input == '1':
+        cursor.execute(
+                        '''SELECT orders.name, orders.address, orders.phone, orders.courier, ordered_products.product, ordered_products.quantity, order_status.order_status
+                        FROM orders
+                        JOIN ordered_products
+                        ON orders.id = ordered_products.order
+                        JOIN order_status
+                        ON orders.order_status = order_status.ID
+                        ORDER BY order_status.order_status
+                        ''')
+            
+        rows = cursor.fetchall()
+        for row in rows:
+            print(f'Name: {(row[0])}, Address: {row[1]}, Phone Number: {row[2]}, Courier: {row[3]}, Product:{row[4]}, Quantity: {row[5]}, Order Status: {row[6]} ')                
+    if user_input == '2':
+        cursor.execute(
+                        '''SELECT orders.name, orders.address, orders.phone, orders.courier, ordered_products.product, ordered_products.quantity, order_status.order_status
+                        FROM orders
+                        JOIN ordered_products
+                        ON orders.id = ordered_products.order
+                        JOIN order_status
+                        ON orders.order_status = order_status.ID
+                        ORDER BY orders.courier
+                        ''')
+            
+        rows = cursor.fetchall()
+        for row in rows:
+            print(f'Name: {(row[0])}, Address: {row[1]}, Phone Number: {row[2]}, Courier: {row[3]}, Product:{row[4]}, Quantity: {row[5]}, Order Status: {row[6]} ')                        
 
 #FUNCTION: create a new order
 def new_order():
-    new_orders = {}
+    
     customer_name = input('Please type the customer name: ')
-    new_orders['customer_name'] = customer_name
     customer_address = input('Please type the customer address: ')
-    new_orders['customer_address'] = customer_address
     customer_phone = input('Please type the customer phone number: ')
-    new_orders['customer_phone'] = customer_phone
+
     
     #add courier to the order 
     cursor.execute('SELECT id, name, phone FROM couriers') 
@@ -595,115 +628,147 @@ def new_order():
         print(f'Courier ID: {row[0]}, Name: {row[1]}, Phone: {row[2]}')
     
     courier_add = input('Please type the index of the courier you would like to attach to this order: ')
-    new_orders['courier_index']= courier_add 
 
-    #order status to preparing
-    new_orders['Order status'] = 'preparing'  
+    # Set order-status to preparing(1)
+    order_status = 1
 
-    #print products list with index values and get user input for what products they want
+    #add new order
+    sql = "INSERT INTO orders (name, address, phone, courier, order_status) VALUES (%s, %s, %s, %s, %s)"
+    val = (customer_name, customer_address, customer_phone, courier_add, order_status)
+    cursor.execute(sql, val)
+    connection.commit()
+
+
+    #print products list with index values and get user input for what products they want, add to ordered products table
     cursor.execute('SELECT id, name, price FROM products') 
     rows = cursor.fetchall()
     for row in rows:
         print(f'Product ID: {row[0]}, Name: {row[1]}, Price: {row[2]}')
-    product_index = []    
     
     while True:
-        user_input = input('What products would you like to add to this order? Type done to exit: ')
-        if user_input == 'done':
+        add_prod_input = input('What products would you like to add to this order? Type done to exit: ')
+        if add_prod_input == 'done':
             break
         else:
-            product_index.append(user_input)
-
-    prod_index_str = ','.join(str(item) for item in product_index)
-    new_orders['product_index']=prod_index_str 
-    print(new_orders)    
-    orders.append(new_orders)
-
-    #track products appended to an order
-    sql = "INSERT INTO ordered_products (products) VALUES (%s)"
-    val = (prod_index_str)
-    cursor.execute(sql, val)
-    connection.commit()
+            #find the id of the order we just added
+            sql = 'SELECT id FROM orders WHERE name=%s'
+            val = (customer_name)
+            cursor.execute(sql, val)
+            row = cursor.fetchone()
+            order_id = row[0]
+            #ask quantity
+            quantity_input = input('Product quantity: ')
+            #insert into ordered products (order, product, quantity)
+            sql = "INSERT INTO ordered_products (id_order, product, quantity) VALUES (%s, %s, %s)"
+            val = (order_id, add_prod_input, quantity_input)
+            cursor.execute(sql, val)
+            connection.commit()
 
 #FUNCTION: update the order status of a product
 def update_order_status():
+    
+    #print order list with ids
     print ("Order list index-values are : ")
-    view_orders_csv()
-    try:
-        user_index = int(input('Index value of the order you wish to update: '))
-        order_to_change = orders[user_index] 
-        for key, value in order_to_change.items():
-            print(key, ':', value)
-        
-    except IndexError:
-        print('You have selected an unavailable index, please try again')
-        mainmenu()
-    except ValueError:
-        print('You have not entered a valid index, please try again!')
-        mainmenu()    
+    cursor.execute("SELECT * FROM orders ORDER BY orders.name")      
+    rows = cursor.fetchall()
+    for row in rows:
+            print(f'Order ID:{(row[0])}, Name: {(row[1])}, Address: {row[2]}, Phone Number: {row[3]}, Courier: {row[4]}, Order Status: {row[5]} ')
     
-    order_status_list = ['Preparing', 'Ready for dispatch', 'Delivered', 'Arrived']
-    print('Order status options:')
-    for index, value in enumerate(order_status_list):
-        print(index, value)
+    #get user input for order id
+    user_order_index = input('ID value of the order you wish to update: ')
+
+    #print possible order statuses
+    cursor.execute("SELECT * FROM order_status")
+    rows = cursor.fetchall()
+    for row in rows:
+            print(f'ID: {(row[0])}, Status: {(row[1])} ')
     
-    try:
-        new_status = int(input('What is the new order status?(Type 0-3): '))
-        updated_status = order_status_list[new_status]
-        order_to_change.update({'order_status': updated_status})
-        print('The current order list:') 
-        print(orders)  
-    except IndexError as e:
-        print('You have selected an unavailable index, please try again')
-        update_order_status()
-    except ValueError as v:
-        print('You have not entered a valid index, please try again!')
-        update_order_status()
+    #get user input for new order status
+    new_status = input('What is the new order status?: ') 
+
+    #update status for this order
+    sql = "UPDATE orders SET  order_status = %s WHERE id = %s"
+    val = (new_status, user_order_index)
+    cursor.execute(sql, val)
+    connection.commit()
 
 #FUNCTION: update entire order
 def update_full_order():
-    for index, value in enumerate(orders):
-        print(index, value)
+    #print order list with ids
+    print ("Order list index-values are : ")
+    cursor.execute("SELECT * FROM orders ORDER BY orders.name")      
+    rows = cursor.fetchall()
+    for row in rows:
+            print(f'Order ID:{(row[0])}, Name: {(row[1])}, Address: {row[2]}, Phone Number: {row[3]}, Courier: {row[4]}, Order Status: {row[5]} ')
     
-    try:
-        user_index = int(input('Please type the index value of the order you wish to change: '))    
-        order_to_change = orders[user_index]
-        print('The order you wish to change is as follows')
-        print(order_to_change)
-    except IndexError:
-        print('You have selected an unavailable index, please try again')
-        mainmenu()
-    except ValueError:
-        print('You have not entered a valid index, please try again!')
-        mainmenu() 
-        
+    #get user input for order id
+    user_order_index = input('ID value of the order you wish to update: ')
+
+    #user inputs for name, address, phone, courier and order status
+    name = input('Please type the customer name: ')
+    address = input('Please type the customer address: ')
+    phone = input('Please type the customer phone number: ')
+
+    cursor.execute('SELECT id, name, phone FROM couriers') 
+    rows = cursor.fetchall()
+    for row in rows:
+        print(f'Courier ID: {row[0]}, Name: {row[1]}, Phone: {row[2]}')
+
+    courier = input('Index value of the courier you want to add: ') 
+
+    cursor.execute("SELECT * FROM order_status")
+    rows = cursor.fetchall()
+    for row in rows:
+            print(f'ID: {(row[0])}, Status: {(row[1])} ')
     
-    for key, value in order_to_change.items():
-        print(key, ':', value)
-        user_input = input('What would you like to change the value to?: ')
-        if user_input == '': 
-            print('Property will not be updated')
-        else:
-            order_to_change[key] = user_input
-    print(orders)        
+    order_status = input('What is the new order status?: ') 
+
+    #update the database
+    column_list = ['name', 'address', 'phone', 'courier', 'order_status']
+    val_tup_list = [(name, user_order_index), (address, user_order_index), (phone, user_order_index), (courier, user_order_index), (order_status, user_order_index)]
+ 
+    for item in column_list:
+        for first, second in val_tup_list:
+            column_name = [ i for i, j in locals().items() if j == first][0]
+            if first == '':
+                continue
+            elif item == column_name:
+                sql = (f"UPDATE orders SET {item} = %s WHERE id = %s")
+                val = (first, second)
+                cursor.execute(sql, val)
+                connection.commit()  
 
 #FUNCTION: delete order
 def del_order():
-    for index, value in enumerate(orders):
-                    print(index, value)
-    try:
-        user_index = int(input('Please type the index vlaue of the product you wish to delete: '))    
-        del orders[user_index]
-        print(orders)
-    except IndexError as e:
-        print('You have selected an unavailable index, please try again')
-    except ValueError as v:
-        print('You have not entered a number, please try again!')
-   
+    cursor.execute('SELECT * FROM orders') 
+    rows = cursor.fetchall()
+    for row in rows:
+            print(f'Order ID:{(row[0])}, Name: {(row[1])}, Address: {row[2]}, Phone Number: {row[3]}, Courier: {row[4]}, Order Status: {row[5]} ') 
+    order_id = input('Index value of the order you wish to delete: ')
+    sql = "DELETE FROM orders WHERE id=%s"
+    val = (order_id)
+    cursor.execute(sql, val)
+    connection.commit()
 
 
+#CUSTOMER_RELATED FUNCTIONS
 
+def add_customer_list():
+    pass
 
+def view_customer_list():
+    pass
+
+def update_customer_list():
+    #view discrepancy in customers in orders list and customers in customer list
+    cursor.execute('''SELECT id, name FROM orders as od
+                WHERE (NOT EXISTS(SELECT name, order_ID
+                FROM customers as cus
+                WHERE (name = od.name AND order_ID = od.id)))''')
+                
+
+def delete_customer_list():
+    pass
 
 
 
@@ -948,7 +1013,7 @@ def mainmenu():
             elif user_input == 3:
                 print('''Order Menu:
                     0. Return to main menu
-                    1. View orders
+                    1. Sort and View orders
                     2. Create a new order
                     3. Update order status
                     4. Update existing order
