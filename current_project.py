@@ -90,14 +90,18 @@ def create_product_csv():
 
 #FUNCTION: update a product to csv
 def update_product_csv():
-    view_products_csv()
+    
     try:
+        view_products_csv()
         user_index = int(input('Index value of the product you wish to update: ')) 
         product_to_change = products[user_index]
+
         for key, value in product_to_change.items():
             print(key, ':', value)
+
         product_new = input('What is the new product name?: ')  
         price_new = input('What is the new price?: ')
+
         if product_new == '': 
             print('Product name will not be updated')
         else:
@@ -107,39 +111,33 @@ def update_product_csv():
             print('Price will not be updated')
         else:
             product_to_change['Price'] = price_new    
+        
+        save_product_list()
+        view_products_csv()
+    
+    except IndexError:
+        print('You have selected an unavailable index, please try again')
+    except ValueError:
+        print('You have not entered a valid index, please try again!') 
+ 
+#FUNCTION: delete a product to csv
+def delete_product_csv():
+         
+    try:
+        view_products_csv()
+        user_index = int(input('Please type the index value of the product you wish to delete: '))    
+        del products[user_index]
+        save_product_list()
+        view_products_csv()   
 
     except IndexError:
         print('You have selected an unavailable index, please try again')
-        update_product_csv()
-    except ValueError as v:
-        print('You have not entered a valid index, please try again!') 
-        update_product_csv()
-    save_product_list()
-    view_products_csv()
-
-#FUNCTION: delete a product to csv
-def delete_product_csv():
-    
-    view_products_csv()
-            
-    try:
-        user_index = int(input('Please type the index value of the product you wish to delete: '))    
-        del products[user_index]
         
-
-    except IndexError as e:
-        print('You have selected an unavailable index, please try again')
-        delete_product_csv()  
-    except ValueError as v:
+    except ValueError:
         print('You have not entered a valid index, please try again!')
-        delete_product_csv()
+        
     
-    save_product_list()                     
-
-
-
-
-
+                     
 
 
 #COURIER-RELATED FUNCTIONS#
@@ -159,17 +157,19 @@ def new_courier_csv():
     save_courier_list()
     view_couriers_csv()
     
-
 #FUNCTION: update a courier to csv
 def update_courier_csv():
-    view_couriers_csv()
+
     try:
+        view_couriers_csv()
         user_index = int(input('Index value of the product you wish to update: ')) 
         courier_to_change = couriers[user_index]
         for key, value in courier_to_change.items():
             print(key, ':', value)
+
         courier_new = input('What is the new courier name?: ')  
         phone_new = input('What is the new phone number?: ')
+
         if courier_new == '': 
             print('Name will not be updated')
         else:
@@ -180,30 +180,30 @@ def update_courier_csv():
         else:
             courier_to_change['Phone'] = phone_new    
 
-    except IndexError:
-        print('You have selected an unavailable index, please try again')
-        update_courier_csv()
-    except ValueError as v:
-        print('You have not entered a valid index, please try again!') 
-        update_courier_csv()
-    save_courier_list()
-    view_couriers_csv()    
+        save_courier_list()
+        view_couriers_csv()
 
+    except IndexError:
+        print('You have selected an unavailable index, please try again')    
+    except ValueError:
+        print('You have not entered a valid index, please try again!') 
+        
 #FUNCTION: delete a courier to csv
-def del_courier_csv():   
-    view_couriers_csv()
+def del_courier_csv():  
+
     try:
+        view_couriers_csv()
         user_index = int(input('Please type the index value of the courier you wish to delete: '))    
         del couriers[user_index]
-        
+        save_courier_list()
+        view_couriers_csv()         
+    
     except IndexError as e:
-        print('You have selected an unavailable index, please try again')
-            
+        print('You have selected an unavailable index, please try again')      
     except ValueError as v:
         print('You have not entered a valid index, please try again!')
     
-    save_courier_list()
-    view_couriers_csv()    
+  
 
 
 
@@ -218,137 +218,150 @@ def view_orders_csv():
 
 #FUNCTION: sort and view orders by csv
 def sort_orders_csv():
-    list_orders= ['Status', 'Courier', 'Original']
-    for index, value in enumerate(list_orders):
-        print(index, value)
-    user_input = input('What key would you like to sort by?: ')
-    if user_input == '0':
-        df = pd.read_csv('orders.csv')
-        df = df.sort_values(by=['order_status'])
-        print(df.to_string())  
-    elif user_input == '1':
-        df = pd.read_csv('orders.csv')
-        df = df.sort_values(by=['courier_index'])
-        print(df.to_string())                 
-    elif user_input == '2':
-        view_orders_csv()
+    
+    try: 
+        list_orders= ['Status', 'Courier', 'Original']
+
+        for index, value in enumerate(list_orders):
+            print(index, value)
+
+        user_input = input('What key would you like to sort by?: ')
+
+        if user_input == '0':
+            df = pd.read_csv('orders.csv')
+            df = df.sort_values(by=['order_status'])
+            print(df.to_string())  
+
+        elif user_input == '1':
+            df = pd.read_csv('orders.csv')
+            df = df.sort_values(by=['courier_index'])
+            print(df.to_string()) 
+
+        elif user_input == '2':
+            view_orders_csv()
+
+    except IndexError as e:
+        print('You have selected an unavailable index, please try again')      
+    except ValueError as v:
+        print('You have not entered a valid index, please try again!')     
 
 #FUNCTION: create a new order to csv
 def new_order_csv():
-    new_orders = {}
-    customer_name = input('Please type the customer name: ')
-    new_orders['customer_name'] = customer_name
-    customer_address = input('Please type the customer address: ')
-    new_orders['customer_address'] = customer_address
-    customer_phone = input('Please type the customer phone number: ')
-    new_orders['customer_phone'] = customer_phone
-    
 
-    #add courier to the order 
-    print ("Courier list index-value are : ")  
-    view_couriers_csv()
-    courier_add = input('Please type the index of the courier you would like to attach to this order: ')
-    new_orders['courier_index']= courier_add 
+    try:
+        new_orders = {}
+        customer_name = input('Please type the customer name: ')
+        new_orders['customer_name'] = customer_name
+        customer_address = input('Please type the customer address: ')
+        new_orders['customer_address'] = customer_address
+        customer_phone = input('Please type the customer phone number: ')
+        new_orders['customer_phone'] = customer_phone
+        
 
-    #order status to preparing
-    new_orders['order_status'] = 'preparing'  
+        #add courier to the order 
+        print ("Courier list index-value are : ")  
+        view_couriers_csv()
+        courier_add = input('Please type the index of the courier you would like to attach to this order: ')
+        new_orders['courier_index']= courier_add 
 
-    #print products list with index values and get user input for what products they want
-    print ("Product list index-value are : ")
-    view_products_csv()
-    product_index = []
-    while True:
-        user_input = input('What products would you like to add to this order? Type done to exit: ')
-        if user_input == 'done':
-            break
-        else:
-            product_index.append(user_input)
-    prod_index_str = ','.join(str(item) for item in product_index)
-    new_orders['product_index']=prod_index_str     
+        #order status to preparing
+        new_orders['order_status'] = 'preparing'  
 
+        #print products list with index values and get user input for what products they want
+        print ("Product list index-value are : ")
+        view_products_csv()
+        
+        product_index = []
+        while True:
+            user_input = input('What products would you like to add to this order? Type done to exit: ')
+            if user_input == 'done':
+                break
+            else:
+                product_index.append(user_input)
+        prod_index_str = ','.join(str(item) for item in product_index)
+        new_orders['product_index'] = prod_index_str     
+        orders.append(new_orders)
 
-    orders.append(new_orders)
+        print('The current order list:')
+        save_order_list()
+        view_orders_csv()
 
-    print('The current order list:')
-    save_order_list()
-    view_orders_csv()
+    except IndexError as e:
+        print('You have selected an unavailable index, please try again')      
+    except ValueError as v:
+        print('You have not entered a valid index, please try again!')
 
 #FUNCTION: update the order status of a product to csv
 def update_order_status_csv():
-    print ("Order list index-values are : ")
-    view_orders_csv()
+ 
     try:
+        print ("Order list index-values are : ")
+        view_orders_csv()
         user_index = int(input('Index value of the order you wish to update: '))
         order_to_change = orders[user_index] 
         for key, value in order_to_change.items():
             print(key, ':', value)
         
-    except IndexError:
-        print('You have selected an unavailable index, please try again')
-        mainmenu()
-    except ValueError:
-        print('You have not entered a valid index, please try again!')
-        mainmenu()    
-    
-    order_status_list = ['Preparing', 'Ready for dispatch', 'Delivered', 'Arrived']
-    print('Order status options:')
-    for index, value in enumerate(order_status_list):
-        print(index, value)
-    
-    try:
+        order_status_list = ['Preparing', 'Ready for dispatch', 'Delivered', 'Arrived']
+        
+        print('Order status options:')
+        for index, value in enumerate(order_status_list):
+            print(index, value)
+        
         new_status = int(input('What is the new order status?(Type 0-3): '))
         updated_status = order_status_list[new_status]
         order_to_change.update({'order_status': updated_status})
-        print('The current order list:') 
-        view_orders_csv()  
-    except IndexError as e:
-        print('You have selected an unavailable index, please try again')
-        update_order_status_csv()
-    except ValueError as v:
-        print('You have not entered a valid index, please try again!')
-        update_order_status_csv()
-    
-    save_order_list()
-    view_orders_csv()    
+        
+        print('The current order list:')    
+        save_order_list()
+        view_orders_csv()    
 
-#FUNCTION: update entire order to csv
-def update_full_order_csv():
-    view_orders_csv()
-    try:
-        user_index = int(input('Please type the index value of the order you wish to change: '))    
-        order_to_change = orders[user_index]
-       
     except IndexError:
         print('You have selected an unavailable index, please try again')
-        mainmenu()
     except ValueError:
         print('You have not entered a valid index, please try again!')
-        mainmenu() 
         
+#FUNCTION: update entire order to csv
+def update_full_order_csv():
     
-    for key, value in order_to_change.items():
-        print(key, ':', value)
+    try:
+        view_orders_csv()
+        user_index = int(input('Please type the index value of the order you wish to change: '))    
+        order_to_change = orders[user_index]
+        
+        for key, value in order_to_change.items():
+            print(key, ':', value)
+        
         user_input = input('What would you like to change the value to?: ')
+        
         if user_input == '': 
             print('Property will not be updated')
         else:
             order_to_change[key] = user_input
-    save_order_list()
-    view_orders_csv()        
 
+        save_order_list()
+        view_orders_csv()        
+       
+    except IndexError:
+        print('You have selected an unavailable index, please try again')        
+    except ValueError:
+        print('You have not entered a valid index, please try again!')
+       
 #FUNCTION: delete order to csv
 def del_order_csv():
-    view_orders_csv()
+    
     try:
+        view_orders_csv()
         user_index = int(input('Please type the index vlaue of the product you wish to delete: '))    
         del orders[user_index]
-        
+        save_order_list()
+        view_orders_csv() 
+
     except IndexError as e:
         print('You have selected an unavailable index, please try again')
     except ValueError as v:
         print('You have not entered a number, please try again!')
-    save_order_list()
-    view_orders_csv()
+
 
 
 
@@ -417,7 +430,6 @@ def update_product():
     if prod_name == '': 
         print('Product name will not be updated')
     else:
-
         sql = "UPDATE products SET name = %s WHERE id = %s"
         val = (prod_name, prod_id)
         cursor.execute(sql, val)
@@ -527,7 +539,7 @@ def update_courier():
     rows = cursor.fetchall()
     for row in rows:
         print(f'Courier ID: {row[0]}, Name: {row[1]}, Phone: {row[2]}')
-    courier_id = input('Index value of the product you wish to update: ')
+    courier_id = input('ID value of the courier you wish to update: ')
     courier_name = input('What is the new courier name?: ') 
     courier_phone = input('What is the new phone number?: ')
 
@@ -553,7 +565,7 @@ def del_courier():
     rows = cursor.fetchall()
     for row in rows:
         print(f'Courier ID: {row[0]}, Name: {row[1]}, Phone: {row[2]}')
-    courier_id = input('Index value of the product you wish to delete: ')
+    courier_id = input('ID value of the courier you wish to delete: ')
     sql = "DELETE FROM couriers WHERE id=%s"
     val = (courier_id)
     cursor.execute(sql, val)
@@ -566,10 +578,12 @@ def del_courier():
 
 #FUNCTION: sort and view orders
 def sort_orders():
+    
     list_orders= ['Customer', 'Status', 'Courier']
     for index, value in enumerate(list_orders):
         print(index, value)
     user_input = input('What would you like to sort by?: ')
+    
     if user_input == '0':    
         cursor.execute(
                         '''SELECT orders.name, orders.address, orders.phone, orders.courier, ordered_products.product, ordered_products.quantity, order_status.order_status
@@ -584,6 +598,7 @@ def sort_orders():
         rows = cursor.fetchall()
         for row in rows:
             print(f'Name: {(row[0])}, Address: {row[1]}, Phone Number: {row[2]}, Courier: {row[3]}, Product:{row[4]}, Quantity: {row[5]}, Order Status: {row[6]} ')
+    
     if user_input == '1':
         cursor.execute(
                         '''SELECT orders.name, orders.address, orders.phone, orders.courier, ordered_products.product, ordered_products.quantity, order_status.order_status
@@ -598,6 +613,7 @@ def sort_orders():
         rows = cursor.fetchall()
         for row in rows:
             print(f'Name: {(row[0])}, Address: {row[1]}, Phone Number: {row[2]}, Courier: {row[3]}, Product:{row[4]}, Quantity: {row[5]}, Order Status: {row[6]} ')                
+    
     if user_input == '2':
         cursor.execute(
                         '''SELECT orders.name, orders.address, orders.phone, orders.courier, ordered_products.product, ordered_products.quantity, order_status.order_status
@@ -627,7 +643,7 @@ def new_order():
     for row in rows:
         print(f'Courier ID: {row[0]}, Name: {row[1]}, Phone: {row[2]}')
     
-    courier_add = input('Please type the index of the courier you would like to attach to this order: ')
+    courier_add = input('ID of the courier you would like to attach to this order: ')
 
     # Set order-status to preparing(1)
     order_status = 1
@@ -694,6 +710,7 @@ def update_order_status():
 
 #FUNCTION: update entire order
 def update_full_order():
+    
     #print order list with ids
     print ("Order list index-values are : ")
     cursor.execute("SELECT * FROM orders ORDER BY orders.name")      
@@ -714,7 +731,7 @@ def update_full_order():
     for row in rows:
         print(f'Courier ID: {row[0]}, Name: {row[1]}, Phone: {row[2]}')
 
-    courier = input('Index value of the courier you want to add: ') 
+    courier = input('ID of the courier you want to add: ') 
 
     cursor.execute("SELECT * FROM order_status")
     rows = cursor.fetchall()
@@ -729,7 +746,7 @@ def update_full_order():
  
     for item in column_list:
         for first, second in val_tup_list:
-            column_name = [ i for i, j in locals().items() if j == first][0]
+            column_name = [ i for i, j in locals().items() if j == first][0] #gets variable name of first and puts it into column_name
             if first == '':
                 continue
             elif item == column_name:
@@ -744,7 +761,7 @@ def del_order():
     rows = cursor.fetchall()
     for row in rows:
             print(f'Order ID:{(row[0])}, Name: {(row[1])}, Address: {row[2]}, Phone Number: {row[3]}, Courier: {row[4]}, Order Status: {row[5]} ') 
-    order_id = input('Index value of the order you wish to delete: ')
+    order_id = input('ID of the order you wish to delete: ')
     sql = "DELETE FROM orders WHERE id=%s"
     val = (order_id)
     cursor.execute(sql, val)
@@ -770,6 +787,7 @@ def update_customer_list():
                         WHERE (name = od.name AND order_ID = od.id)))''')
 
     user_input = input('Would you like to add these customers to the customer list?(y/n): ')
+    
     if user_input == 'y':
         rows = cursor.fetchall()
         for row in rows:
@@ -779,6 +797,7 @@ def update_customer_list():
             val = (name, order_id)
             cursor.execute(sql, val)
             connection.commit()
+    
     elif user_input == 'n':
         print('Customer list has not been updated')        
             
@@ -787,7 +806,7 @@ def delete_customer_list():
     rows = cursor.fetchall()
     for row in rows:
         print(f'Customer ID: {row[0]}, Name: {row[1]}, Order ID: {row[2]}')
-    customer_id = input('Customer ID of the customer you wish to delete: ')
+    customer_id = input('ID of the customer you wish to delete: ')
     sql = "DELETE FROM customers WHERE id=%s"
     val = (customer_id)
     cursor.execute(sql, val)
@@ -807,7 +826,7 @@ def mainmenu():
         2. Main Menu (Database)''')
 
         data_store_option = int(input("Please enter menu number: "))
-
+        
         if data_store_option == 0:
             print('Exiting application')
             exit() 
@@ -823,12 +842,9 @@ def mainmenu():
             user_input = int(input("Please enter menu number: "))
             
             if user_input == 0:
-                mainmenu() 
+                continue
 
-            elif user_input == 1:
-                print('Product list:')
-                view_products_csv()
-    
+            elif user_input == 1:  
                 print('''Product Menu:
                 0. Return to main menu
                 1. Load and View products
@@ -839,12 +855,13 @@ def mainmenu():
                 x = int(input("Please enter menu number: "))
                 
                 if x == 0:
-                    mainmenu()
+                    continue
                 
                 elif x == 1: 
                 #view products    
                     load_product_data()
                     view_products_csv()
+                    
                 
                 elif x == 2:
                 #create a new product    
@@ -859,8 +876,7 @@ def mainmenu():
                 elif x == 4:
                 #delete a product    
                     delete_product_csv()
-                    
-                
+                     
                 else:
                     print('You have not entered a valid sub-menu number, please try again') 
 
@@ -876,7 +892,7 @@ def mainmenu():
                 x = int(input("Please enter menu number: "))
 
                 if x == 0:
-                    mainmenu()
+                    continue
 
                 elif x == 1:
                     load_courier_data()
@@ -896,7 +912,6 @@ def mainmenu():
                     #delete a courier
                     del_courier_csv()
                     
-
                 else:
                     print('You have not entered a valid sub-menu number, please try again')     
                 
@@ -912,7 +927,7 @@ def mainmenu():
                 x = int(input("Please enter menu number: "))
 
                 if x == 0:
-                    mainmenu()
+                    continue
 
                 elif x == 1:
                     #view and sort orders
@@ -942,7 +957,6 @@ def mainmenu():
                     #delete an existing order
                     del_order_csv()
                     
-
                 else:
                     print('You have not entered a valid sub-menu number, please try again') 
             else:
@@ -977,7 +991,7 @@ def mainmenu():
                 x = int(input("Please enter menu number: "))
                 
                 if x == 0:
-                    mainmenu()
+                    continue
                 
                 elif x == 1: 
                 #view products    
@@ -1013,7 +1027,7 @@ def mainmenu():
                 x = int(input("Please enter menu number: "))
 
                 if x == 0:
-                    mainmenu()
+                    continue
 
                 elif x == 1:
                     #View couriers
@@ -1046,7 +1060,7 @@ def mainmenu():
                 x = int(input("Please enter menu number: "))
 
                 if x == 0:
-                    mainmenu()
+                    continue
 
                 elif x == 1:
                     #view and sort orders
@@ -1070,6 +1084,7 @@ def mainmenu():
 
                 else:
                     print('You have not entered a valid sub-menu number, please try again') 
+            
             elif user_input == 4:
                 print('''Customer Menu:
                     0. Return to main menu
@@ -1080,7 +1095,7 @@ def mainmenu():
                 x = int(input("Please enter menu number: "))
 
                 if x == 0:
-                    mainmenu()
+                    continue
                 
                 elif x == 1:
                     #view customers
