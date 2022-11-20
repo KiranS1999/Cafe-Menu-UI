@@ -751,24 +751,47 @@ def del_order():
     connection.commit()
 
 
+
+
 #CUSTOMER_RELATED FUNCTIONS
 
-def add_customer_list():
-    pass
-
 def view_customer_list():
-    pass
+    cursor.execute('SELECT * FROM customers')
+    rows = cursor.fetchall()
+    for row in rows:
+        print(f'Name: {(row[1])}, Order ID: {row[2]}')
 
 def update_customer_list():
     #view discrepancy in customers in orders list and customers in customer list
+    #shows customers that are in orders but not in customer list yet
     cursor.execute('''SELECT id, name FROM orders as od
-                WHERE (NOT EXISTS(SELECT name, order_ID
-                FROM customers as cus
-                WHERE (name = od.name AND order_ID = od.id)))''')
-                
+                    WHERE (NOT EXISTS(SELECT name, order_ID
+                        FROM customers 
+                        WHERE (name = od.name AND order_ID = od.id)))''')
 
+    user_input = input('Would you like to add these customers to the customer list?(y/n): ')
+    if user_input == 'y':
+        rows = cursor.fetchall()
+        for row in rows:
+            name = row[1]
+            order_id = row[0]
+            sql = 'INSERT INTO customers (name, order_id) VALUES (%s, %s)'
+            val = (name, order_id)
+            cursor.execute(sql, val)
+            connection.commit()
+    elif user_input == 'n':
+        print('Customer list has not been updated')        
+            
 def delete_customer_list():
-    pass
+    cursor.execute('SELECT ID, name, order_id FROM customers') 
+    rows = cursor.fetchall()
+    for row in rows:
+        print(f'Customer ID: {row[0]}, Name: {row[1]}, Order ID: {row[2]}')
+    customer_id = input('Customer ID of the customer you wish to delete: ')
+    sql = "DELETE FROM customers WHERE id=%s"
+    val = (customer_id)
+    cursor.execute(sql, val)
+    connection.commit()  
 
 
 
@@ -930,7 +953,8 @@ def mainmenu():
             0. Exit Database
             1. Products
             2. Couriers
-            3. Orders''')
+            3. Orders
+            4. Customers''')
 
             user_input = int(input("Please enter menu number: "))
             
@@ -1046,6 +1070,33 @@ def mainmenu():
 
                 else:
                     print('You have not entered a valid sub-menu number, please try again') 
+            elif user_input == 4:
+                print('''Customer Menu:
+                    0. Return to main menu
+                    1. View customers
+                    2. Update customers
+                    3. Delete customers
+                    ''')
+                x = int(input("Please enter menu number: "))
+
+                if x == 0:
+                    mainmenu()
+                
+                elif x == 1:
+                    #view customers
+                    view_customer_list()
+
+                elif x == 2:
+                    #update customers
+                    update_customer_list()
+
+                elif x == 3:
+                    #delete customers
+                    delete_customer_list()
+                
+                else:
+                    print('You have not entered a valid sub-menu number, please try again')                    
+    
             else:
                     print('You have not entered a valid menu number, please try again') 
         else:
