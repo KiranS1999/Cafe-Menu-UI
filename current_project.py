@@ -115,10 +115,11 @@ def update_product_csv():
         save_product_list()
         view_products_csv()
     
-    except IndexError:
-        print('You have selected an unavailable index, please try again')
-    except ValueError:
-        print('You have not entered a valid index, please try again!') 
+    except (IndexError, ValueError):
+        print('You have selected an invalid index number, please try again!') 
+
+    else:
+        print('You have successfully updated this product!')    
  
 #FUNCTION: delete a product to csv
 def delete_product_csv():
@@ -130,11 +131,11 @@ def delete_product_csv():
         save_product_list()
         view_products_csv()   
 
-    except IndexError:
-        print('You have selected an unavailable index, please try again')
-        
-    except ValueError:
-        print('You have not entered a valid index, please try again!')
+    except (IndexError, ValueError):
+        print('You have selected an invalid index number, please try again!')        
+
+    else:
+        print('You have successfully deleted this product!')    
         
     
                      
@@ -183,11 +184,12 @@ def update_courier_csv():
         save_courier_list()
         view_couriers_csv()
 
-    except IndexError:
-        print('You have selected an unavailable index, please try again')    
-    except ValueError:
-        print('You have not entered a valid index, please try again!') 
-        
+    except (IndexError, ValueError):
+        print('You have selected an invalid index number, please try again!')
+
+    else: 
+        print('You have successfully updated this courier!')     
+      
 #FUNCTION: delete a courier to csv
 def del_courier_csv():  
 
@@ -198,11 +200,11 @@ def del_courier_csv():
         save_courier_list()
         view_couriers_csv()         
     
-    except IndexError as e:
-        print('You have selected an unavailable index, please try again')      
-    except ValueError as v:
-        print('You have not entered a valid index, please try again!')
-    
+    except (IndexError, ValueError):
+        print('You have selected an invalid index number, please try again!') 
+
+    else:
+        print('You have successfully deleted this courier!')    
   
 
 
@@ -219,31 +221,31 @@ def view_orders_csv():
 #FUNCTION: sort and view orders by csv
 def sort_orders_csv():
     
-    try: 
-        list_orders= ['Status', 'Courier', 'Original']
+    list_orders= ['Status', 'Courier', 'Original']
 
-        for index, value in enumerate(list_orders):
-            print(index, value)
+    for index, value in enumerate(list_orders):
+        print(index, value)
 
-        user_input = input('What key would you like to sort by?: ')
+    user_input = int(input('What key would you like to sort by?: '))
 
-        if user_input == '0':
-            df = pd.read_csv('orders.csv')
-            df = df.sort_values(by=['order_status'])
-            print(df.to_string())  
+    if user_input == 0:
+        df = pd.read_csv('orders.csv')
+        df = df.sort_values(by=['order_status'])
+        print(df.to_string())  
 
-        elif user_input == '1':
-            df = pd.read_csv('orders.csv')
-            df = df.sort_values(by=['courier_index'])
-            print(df.to_string()) 
+    elif user_input == 1:
+        df = pd.read_csv('orders.csv')
+        df = df.sort_values(by=['courier_index'])
+        print(df.to_string()) 
 
-        elif user_input == '2':
-            view_orders_csv()
+    elif user_input == 2:
+        view_orders_csv()
 
-    except IndexError as e:
-        print('You have selected an unavailable index, please try again')      
-    except ValueError as v:
-        print('You have not entered a valid index, please try again!')     
+    elif user_input < 0 or user_input > 2:
+        raise Exception ('You have selected an invalid index number, please try again!')
+         
+        
+ 
 
 #FUNCTION: create a new order to csv
 def new_order_csv():
@@ -286,10 +288,12 @@ def new_order_csv():
         save_order_list()
         view_orders_csv()
 
-    except IndexError as e:
-        print('You have selected an unavailable index, please try again')      
-    except ValueError as v:
-        print('You have not entered a valid index, please try again!')
+    except (IndexError, ValueError):
+        print('You have selected an invalid index number, please try again!')
+
+    else: 
+        print('You have successfully created an order!')
+
 
 #FUNCTION: update the order status of a product to csv
 def update_order_status_csv():
@@ -316,10 +320,11 @@ def update_order_status_csv():
         save_order_list()
         view_orders_csv()    
 
-    except IndexError:
-        print('You have selected an unavailable index, please try again')
-    except ValueError:
-        print('You have not entered a valid index, please try again!')
+    except (IndexError, ValueError):
+        print('You have selected an invalid index number, please try again!')
+
+    else: 
+        print('You have successfully updated this order status!')
         
 #FUNCTION: update entire order to csv
 def update_full_order_csv():
@@ -342,11 +347,12 @@ def update_full_order_csv():
         save_order_list()
         view_orders_csv()        
        
-    except IndexError:
-        print('You have selected an unavailable index, please try again')        
-    except ValueError:
-        print('You have not entered a valid index, please try again!')
-       
+    except (IndexError, ValueError):
+        print('You have selected an invalid index number, please try again!')
+
+    else: 
+        print('You have successfully updated this order!')
+
 #FUNCTION: delete order to csv
 def del_order_csv():
     
@@ -357,11 +363,11 @@ def del_order_csv():
         save_order_list()
         view_orders_csv() 
 
-    except IndexError as e:
-        print('You have selected an unavailable index, please try again')
-    except ValueError as v:
-        print('You have not entered a number, please try again!')
+    except (IndexError, ValueError):
+        print('You have selected an invalid index number, please try again!')
 
+    else: 
+        print('You have successfully deleted this order!')
 
 
 
