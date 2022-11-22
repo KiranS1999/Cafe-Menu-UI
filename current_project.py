@@ -1081,7 +1081,7 @@ def delete_customer_list():
   
 def mainmenu():
     while True:
-        sleep(3)
+        sleep(2)
         clear_screen()
         print ('''Menu
         [0] Exit 
