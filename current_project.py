@@ -12,7 +12,7 @@ from time import sleep
 from dotenv import load_dotenv
 
 from csv_functions import product_menu_csv, orders_menu_csv, couriers_menu_csv, load_product_data, load_courier_data,load_order_data
-#,save_product_list,save_order_list,save_courier_list
+
 from db_functions import product_menu_db, order_menu_db, courier_menu_db, customer_menu_db
 
 
