@@ -57,8 +57,8 @@ def mainmenu():
         clear_screen()
         print ('''Menu
         [0] Exit 
-        [1] Main Menu (CSV)
-        [2] Main Menu (Database)''')
+        [1] Main Menu: CSV
+        [2] Main Menu: Database''')
 
         data_store_option = int(input("Please enter menu number: "))
         
@@ -73,6 +73,7 @@ def mainmenu():
             [1] Products
             [2] Couriers
             [3] Orders''')
+    
 
             load_product_data()
             load_courier_data()

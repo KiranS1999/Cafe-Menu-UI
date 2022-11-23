@@ -1,3 +1,4 @@
+#DATABASE specifc functions referenced in current_project.py, cafe project
 
 #import libraries
 import pymysql
@@ -5,8 +6,8 @@ import os
 from time import sleep
 from dotenv import load_dotenv
 
-#SET UP DB CONNECTION
 
+#### SET UP DB CONNECTION ####
 
 # Load environment variables from .env file
 load_dotenv()
@@ -24,6 +25,8 @@ connection = pymysql.connect(
 )
 
 cursor = connection.cursor()
+
+
 
 
 #PRODUCT-RELATED FUNCTIONS
@@ -216,8 +219,6 @@ def track_prod_inventory():
 
 
 
-
-
 #COURIER-RELATED FUNCTIONS
 
 #FUNCTION: view all couriers
@@ -314,7 +315,6 @@ def del_courier():
         elif courier_id not in available_ids:
             print('You have selected an invalid courier ID, please try again!')
             continue
-
 
 
 
@@ -681,6 +681,8 @@ def delete_customer_list():
             continue 
 
 
+
+
 #### MAIN PRODUCT MENU FUNCTION ####
 def product_menu_db():
     while True:
@@ -726,12 +728,11 @@ def product_menu_db():
             continue 
 
 #### MAIN COURIER MENU FUNCTION ####
-
 def courier_menu_db():
     while True:
         print('''Courier Menu:
                     [0] Return to main menu
-                    [1] Print courier list
+                    [1] View couriers
                     [2] Create a new courier
                     [3] Update existing courier
                     [4] Delete courier
@@ -767,7 +768,6 @@ def courier_menu_db():
             continue
 
 #### MAIN ORDER MENU FUNCTION ####            
-
 def order_menu_db():
     while True:
         print('''Order Menu:

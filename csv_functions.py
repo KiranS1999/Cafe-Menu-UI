@@ -1,3 +1,5 @@
+#CSV specific fucntions referenced in current_project.py, cafe project
+
 
 #import libraries
 import csv
@@ -7,6 +9,9 @@ import pandas as pd
 orders = []
 products = [] 
 couriers = []
+
+
+#### LOADING/SAVING CSV FILE ####
 
 #FUNCTION: Loading data through csv
 def load_product_data():
@@ -131,7 +136,6 @@ def delete_product_csv():
     
                      
 
-
 #COURIER-RELATED FUNCTIONS#
 
 #FUNCTION: View couriers with pandas
@@ -201,8 +205,6 @@ def del_courier_csv():
     else:
         print('You have successfully deleted this courier!')    
   
-
-
 
 
 
@@ -337,12 +339,12 @@ def update_full_order_csv():
         for key, value in order_to_change.items():
             print(key, ':', value)
         
-        user_input = input('What would you like to change the value to?: ')
-        
-        if user_input == '': 
-            print('Property will not be updated')
-        else:
-            order_to_change[key] = user_input
+            user_input = input('What would you like to change the value to?: ')
+            
+            if user_input == '': 
+                print('Property will not be updated')
+            else:
+                order_to_change[key] = user_input
 
         save_order_list()
         view_orders_csv()        
@@ -368,6 +370,7 @@ def del_order_csv():
 
     else: 
         print('You have successfully deleted this order!')
+
 
 
 
@@ -416,15 +419,13 @@ def product_menu_csv():
             print('You have not entered a valid sub-menu number, please try again')
             continue 
 
-
-
 #### MAIN COURIERS CSV MENU ####
 def couriers_menu_csv():
 
     while True:    
         print('''Courier Menu:
             [0] Return to main menu
-            [1] Load and View courier list
+            [1] View couriers
             [2] Create a new courier
             [3] Update existing courier
             [4] Delete courier
@@ -460,13 +461,12 @@ def couriers_menu_csv():
             continue  
 
 #### MAIN ORDERS CSV MENU ####
-
 def orders_menu_csv():
 
     while True:    
         print('''Order Menu:
             [0] Return to main menu
-            [1] Load, View and Sort orders
+            [1] View and Sort orders
             [2] Create a new order
             [3] Update order status
             [4] Update existing order
