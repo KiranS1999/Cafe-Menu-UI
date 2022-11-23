@@ -9,7 +9,7 @@ How did you meet the client brief? \
 -UI is clear to navigate and has option to return to main menu 
 
 How did you guarantee the client requirements? \
--Tried to implement unit testing via mock/patch 
+-Tried to implement unit testing via mock/patch \
 -try/except and if/else to catch errors
 
 If you had more time, what is one thing you would improve upon? \
