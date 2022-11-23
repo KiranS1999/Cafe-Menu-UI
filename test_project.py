@@ -2,6 +2,7 @@
 from csv_functions import load_order_data, load_courier_data, load_product_data, create_product_csv
 
 from unittest.mock import patch, mock_open
+import unittest
 
 from pandas.util.testing import assert_frame_equal
 
@@ -31,7 +32,20 @@ def test_load_courier_data(mock_open):
 
 
 #TESTING- PRODUCT-RELATED FUNCTIONS
+# test dataframe
+colnames = ['Product', 'Price']
+class DFTests(unittest.TestCase):
+    def setUp(self):
+        test_file_name =  'products.csv'
+        data = pd.read_csv(test_file_name,
+            sep = ',',
+            header = 0)
+        self.fixture = data
 
+    #Check column names
+    def test_columns(self):
+        self.assertListEqual(list(self.fixture.columns), colnames)
+# 
 # def create_product_csv():
 #     newprod = input('Please enter your product name: ').title()
 #     newprice = input('Please enter the price: ')
