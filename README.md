@@ -1,5 +1,5 @@
 # Generation-Mini-Project
-Creating a cafe order, product and courier menu
+Creating a cafe order, product and courier menu.
 
 How did you meet the client brief? \
 -Maintained a collection of products, orders and couriers data in both CSV files and a database (MySQL) \
