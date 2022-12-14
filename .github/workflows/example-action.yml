@@ -21,6 +21,6 @@ jobs:
       - name: checkout-repo
         uses: actions/checkout@v2
       - name: Install pygount
-        run: py -m pip install pygount
+        run: pip install pygount
       - name: Count code lines
         run: pygcount -v  
