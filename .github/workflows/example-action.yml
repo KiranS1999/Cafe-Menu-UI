@@ -1,6 +1,9 @@
 name: list-repo
 
-on: push
+on: 
+  push:
+      branches:
+        - 'main' 
 
 jobs:
   list-repo-files:
@@ -11,3 +14,13 @@ jobs:
         uses: actions/checkout@v2
       - name: list-dir
         run: ls -laR # Recursively list directory contents
+  count-code-lines:
+    name: List lines of code
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout-repo
+        uses: actions/checkout@v2
+      - name: Install pygount
+        run: py -m pip install pygount
+      - name: Count code lines
+        run: pygcount -v  
