@@ -23,5 +23,5 @@ jobs:
       - name: Install pygount
         run: pip install pygount
       - name: Count code lines
-        run: pygcount --format=summary src
+        run: pygount --format=summary src
          
