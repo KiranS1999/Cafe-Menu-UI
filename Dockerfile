@@ -8,10 +8,10 @@ WORKDIR /usr/app
 COPY . .
 
 # Install dependencies
-#RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt
 
 # Give our container internet access
-#EXPOSE 80
+EXPOSE 80
 
 # Execute this command on start
-ENTRYPOINT ["python", "-m", "current_project.py"]
+ENTRYPOINT ["python", "-m", "main.py"]

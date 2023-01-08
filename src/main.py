@@ -1,6 +1,5 @@
 #PROGRAM: A menu system that allows user to view, create, amend and delete 
-#the products, couriers and orders for a cafe 
-#using either CSV files or a database
+#the products, couriers and orders for a cafe using either CSV files or a MySQL database
 
 
 #Libraries
@@ -10,10 +9,9 @@ import pymysql
 import os
 from time import sleep
 from dotenv import load_dotenv
-
-from csv_functions import product_menu_csv, orders_menu_csv, couriers_menu_csv, load_product_data, load_courier_data,load_order_data
-
-from db_functions import product_menu_db, order_menu_db, courier_menu_db, customer_menu_db
+from csv_functions.csv_load import load_product_data, load_courier_data, load_order_data
+from csv_functions.csv_main  import product_menu_csv, orders_menu_csv, couriers_menu_csv
+from db_functions.db_main import product_menu_db, order_menu_db, courier_menu_db, customer_menu_db
 
 
 #FUNCTION: clear screen
@@ -47,7 +45,10 @@ connection = pymysql.connect(
 
 cursor = connection.cursor()
 
-
+#empty list of orders,products and couriers to be written to a csv file
+orders = []
+products = [] 
+couriers = []   
 
 #### MAIN MENU FUNCTION ####
   
@@ -131,5 +132,5 @@ def mainmenu():
         else:
             print('You have not entered a valid menu number, please try again')
 
-if __name__ == "__main__":
+if __name__ == "__main__": 
     mainmenu()
