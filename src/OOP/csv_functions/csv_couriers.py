@@ -2,49 +2,16 @@
 
 import pandas as pd 
 from datetime import date
-from dataclasses import dataclass, field
-import csv
-    
-@dataclass
-class UserLog:    
-    '''Class for keeping track of user information'''
-    name: str = field(default_factory=('No User'))
-    action: str = field(default_factory=('No Action'))
-    date: str = field(default_factory=('No Date'))
+from csv_load import SaveLoad
 
-
-class SaveLoad:
-    def __init__(self, filename: str):
-        self.filename = filename
     
-    def load_data (self, info_type):
-        try:
-            with open(self.filename, "r", newline = '') as file:
-                file = csv.DictReader(file)
-                for row in file:
-                    info_type.append(dict(row))  
-        except Exception as e:
-            print(f"Error: {e}")
-            raise Exception    
-
-    def save_data (self, info_type, fieldnames=[]):
-        try:
-            with open(self.filename, "w", newline = '') as file:
-                w = csv.DictWriter(file, fieldnames)
-                w.writeheader()
-                w.writerows(info_type)
-    
-        except Exception as e:
-            print(f"Error: {e}")
-            raise Exception
 
 class CourierLog:
-    def __init__(self, name: str):
+    def __init__(self):
         '''Initialise the product.
-        Args:
-            name: User Name
+
         '''
-        self.name = name
+        self.name = input('Please enter your name: ')
         self.date = self.current_date()
         self.action = '*No Action*'
 
@@ -79,8 +46,8 @@ class CourierLog:
 class CourierMenu(CourierLog, SaveLoad):
     '''Class CourierMenu implemets a courier menu with a fucntionality to CRUD couriers
         and save changes to a CSV'''
-    def __init__(self, filename: str, name: str):
-        CourierLog.__init__(self, name)
+    def __init__(self, filename: str):
+        CourierLog.__init__(self)
         SaveLoad.__init__(self, filename)
         self.courier_list = []
         self.load_data()

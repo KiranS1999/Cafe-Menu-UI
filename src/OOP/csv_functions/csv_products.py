@@ -1,56 +1,16 @@
 #PRODUCT-RELATED FUNCTIONS#
 
-import csv
+from csv_load import SaveLoad
 import pandas as pd
-from dataclasses import dataclass, field
 from datetime import date
 
 
 
-
-@dataclass
-class UserLog:
-    '''Class for keeping track of user information'''
-    name: str = field(default_factory=('No User'))
-    action: str = field(default_factory=('No Action'))
-    date: str = field(default_factory=('No Date'))
-
-
- 
-
-class SaveLoad:
-    def __init__(self, filename: str):
-        self.filename = filename
-    
-    def load_data (self, info_type):
-        try:
-            with open(self.filename, "r", newline = '') as file:
-                file = csv.DictReader(file)
-                for row in file:
-                    info_type.append(dict(row))  
-        except Exception as e:
-            print(f"Error: {e}")
-            raise Exception    
-
-    def save_data (self, info_type, fieldnames=[]):
-        try:
-            with open(self.filename, "w", newline = '') as file:
-                w = csv.DictWriter(file, fieldnames)
-                w.writeheader()
-                w.writerows(info_type)
-    
-        except Exception as e:
-            print(f"Error: {e}")
-            raise Exception
-
-
 class ProductLog:
-    def __init__(self, name: str):
+    def __init__(self):
         '''Initialise the product.
-        Args:
-            name: User Name
         '''
-        self.name = name
+        self.name = input('Please enter your name: ')
         self.date = self.current_date()
         self.action = '*No Action*'
 
@@ -89,8 +49,8 @@ class ProductLog:
 class ProductMenu(ProductLog, SaveLoad):
     '''Class ProductMenu implemets a product mennu with a fucntionality to CRUD products 
         and save them to a CSV'''
-    def __init__(self, filename: str, name: str):
-        ProductLog.__init__(self, name)
+    def __init__(self, filename: str):
+        ProductLog.__init__(self)
         SaveLoad.__init__(self, filename)
         self.product_list = []
         self.load_data()
@@ -184,7 +144,7 @@ class ProductMenu(ProductLog, SaveLoad):
         super().delete_product_log(self.product_list[user_index])
 
 
-x = ProductMenu('products.csv', 'Kiran')
+x = ProductMenu('products.csv')
 print(x.useraccess())
 x.view_products()
 x.create_product()

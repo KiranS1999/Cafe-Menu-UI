@@ -2,50 +2,16 @@
 
 import pandas as pd 
 from datetime import date
-from dataclasses import dataclass, field
-import csv
 from csv_products import ProductMenu
+from csv_load import SaveLoad
     
-@dataclass
-class UserLog:    
-    '''Class for keeping track of user information'''
-    name: str = field(default_factory=('No User'))
-    action: str = field(default_factory=('No Action'))
-    date: str = field(default_factory=('No Date'))
-
-
-class SaveLoad:
-    def __init__(self, filename: str):
-        self.filename = filename
-    
-    def load_data (self, info_type):
-        try:
-            with open(self.filename, "r", newline = '') as file:
-                file = csv.DictReader(file)
-                for row in file:
-                    info_type.append(dict(row))  
-        except Exception as e:
-            print(f"Error: {e}")
-            raise Exception    
-
-    def save_data (self, info_type, fieldnames=[]):
-        try:
-            with open(self.filename, "w", newline = '') as file:
-                w = csv.DictWriter(file, fieldnames)
-                w.writeheader()
-                w.writerows(info_type)
-    
-        except Exception as e:
-            print(f"Error: {e}")
-            raise Exception
 
 class OrderLog:
-    def __init__(self, name: str):
+    def __init__(self):
         '''Initialise the user log info
-        Args:
-            name: User Name
+
         '''
-        self.name = name
+        self.name = input('Please enter your name: ')
         self.date = self.current_date()
         self.action = '*No Action*'
 
@@ -88,8 +54,8 @@ class OrderLog:
 class OrderMenu(OrderLog, SaveLoad):
     '''Class OrderMenu implements a order menu with a functionality to CRUD orders
         and save changes to a CSV'''
-    def __init__(self, filename: str, name: str):
-        OrderLog.__init__(self, name)
+    def __init__(self, filename: str):
+        OrderLog.__init__(self)
         SaveLoad.__init__(self, filename)
         self.order_list = []
         self.load_data()
@@ -259,7 +225,7 @@ class OrderMenu(OrderLog, SaveLoad):
             print('You have successfully updated this order!')
             return True
             
-    def delete_couriers(self):
+    def delete_order(self):
         try:
             self.view_order()
             user_index = int(input('Index value of the product you wish to delete: '))    

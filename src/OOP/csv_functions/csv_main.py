@@ -2,142 +2,172 @@
 
 
 #import libraries
-import csv
-import pandas as pd
-from csv_functions.csv_orders import  sort_orders_csv, new_order_csv, update_order_status_csv, update_full_order_csv, del_order_csv
-from csv_functions.csv_products import view_products_csv, create_product_csv, update_product_csv, delete_product_csv
-from csv_functions.csv_couriers import view_couriers_csv, new_courier_csv, update_courier_csv, del_courier_csv
+from csv_orders import OrderMenu
+from csv_couriers import CourierMenu
+from csv_products import ProductMenu
+
 
 
 
 #### MAIN PRODUCT CSV MENU ####
-def product_menu_csv():
+class MenuCSV:
 
-    while True:
-        print('''Product Menu: 
-        [0] Return to main menu
-        [1] View products
-        [2] Create a new product
-        [3] Update a product
-        [4] Delete a product''')
-        
-        
+    def __init__(self):
+        '''Initialise the CSV Menu Object'''
 
-        x = int(input("Please enter menu number: "))
+        self.products = ProductMenu()
+        self.couriers = CourierMenu()
+        self.orders = OrderMenu()
+
+    def main_csv(self):
         
-        if x == 0:
-            break
-        
-        elif x == 1: 
-        #view products    
-            view_products_csv()
-            continue
+        while True:
+            print ('''Main menu
+            [0] Return to Main Menu
+            [1] Products
+            [2] Couriers
+            [3] Orders''')
+
+            user_input = int(input("Please enter menu number: "))
             
-        
-        elif x == 2:
-        #create a new product    
-            create_product_csv()
-            continue
-    
-        
-        elif x == 3:
-        #update an existing product    
-            update_product_csv()
-            continue
-            
-        
-        elif x == 4:
-        #delete a product    
-            delete_product_csv()
-            continue
+            if user_input == 0:
+                continue
+
+            elif user_input == 1:
+                self.product_menu_csv()
+                 
+            elif user_input == 2:
+                self.couriers_menu_csv()
                 
-        else:
-            print('You have not entered a valid sub-menu number, please try again')
-            continue 
+            elif user_input == 3:
+                self.orders_menu_csv()
+                
+            else:
+                print('You have not entered a valid menu number, please try again')             
 
-#### MAIN COURIERS CSV MENU ####
-def couriers_menu_csv():
+    def product_menu_csv():
 
-    while True:    
-        print('''Courier Menu:
+        while True:
+            print('''Product Menu: 
             [0] Return to main menu
-            [1] View couriers
-            [2] Create a new courier
-            [3] Update existing courier
-            [4] Delete courier
-        ''')
-
-        x = int(input("Please enter menu number: "))
-
-        if x == 0:
-            break
-
-        elif x == 1:
-            #view couriers
-            view_couriers_csv()
-            continue
-
-        elif x == 2:
-            #create a new courier
-            new_courier_csv()
-            continue
+            [1] View products
+            [2] Create a new product
+            [3] Update a product
+            [4] Delete a product''')
         
-        elif x == 3:
-            #update exisitng courier
-            update_courier_csv()
-            continue
+            x = int(input("Please enter menu number: "))
             
-        elif x == 4:
-            #delete a courier
-            del_courier_csv()
-            continue
+            if x == 0:
+                print('Exiting Products Menu')
+                break
+            
+            elif x == 1: 
+            #view products    
+                ProductMenu.view_products()
+                continue
         
-        else:
-            print('You have not entered a valid sub-menu number, please try again')
-            continue  
+            elif x == 2:
+            #create a new product    
+                ProductMenu.create_product()
+                continue
+            
+            elif x == 3:
+            #update an existing product    
+                ProductMenu.update_product()
+                continue
+            
+            elif x == 4:
+            #delete a product    
+                ProductMenu.delete_product()
+                continue
+                    
+            else:
+                print('You have not entered a valid sub-menu number, please try again')
+                continue 
 
-#### MAIN ORDERS CSV MENU ####
-def orders_menu_csv():
+    #### MAIN COURIERS CSV MENU ####
+    def couriers_menu_csv():
 
-    while True:    
-        print('''Order Menu:
-            [0] Return to main menu
-            [1] View and Sort orders
-            [2] Create a new order
-            [3] Update order status
-            [4] Update existing order
-            [5] Delete an order''')
+        while True:    
+            print('''Courier Menu:
+                [0] Return to main menu
+                [1] View couriers
+                [2] Create a new courier
+                [3] Update existing courier
+                [4] Delete courier
+            ''')
 
-        x = int(input("Please enter menu number: "))
+            x = int(input("Please enter menu number: "))
 
-        if x == 0:
-            break
+            if x == 0:
+                break
+                
+            elif x == 1:
+                #view couriers
+                CourierMenu.view_courier()
+                continue
 
-        elif x == 1:
-            #view and sort orders
-            sort_orders_csv()              
-            continue
+            elif x == 2:
+                #create a new courier
+                CourierMenu.create_couriers()
+                continue
+            
+            elif x == 3:
+                #update exisitng courier
+                CourierMenu.update_couriers()
+                continue
+                
+            elif x == 4:
+                #delete a courier
+                CourierMenu.delete_couriers()
+                continue
+            
+            else:
+                print('You have not entered a valid sub-menu number, please try again')
+                continue  
 
-        elif x == 2:
-            #create a new order
-            new_order_csv()
-            continue
+    #### MAIN ORDERS CSV MENU ####
+    def orders_menu_csv():
 
-        elif x == 3:
-            #update order status                    
-            update_order_status_csv()
-            continue
+        while True:    
+            print('''Order Menu:
+                [0] Return to main menu
+                [1] View and Sort orders
+                [2] Create a new order
+                [3] Update order status
+                [4] Update existing order
+                [5] Delete an order''')
 
-        elif x == 4:
-            #update an existing order
-            update_full_order_csv()
-            continue        
+            x = int(input("Please enter menu number: "))
 
-        elif x==5:
-            #delete an existing order
-            del_order_csv()
-            continue
-        
-        else:
-            print('You have not entered a valid sub-menu number, please try again')
-            continue 
+            if x == 0:
+                break
+
+            elif x == 1:
+                #view and sort orders
+                OrderMenu.sort_orders_csv()             
+                continue
+
+            elif x == 2:
+                #create a new order
+                OrderMenu.create_order()
+                continue
+
+            elif x == 3:
+                #update order status                    
+                OrderMenu.update_order_status()
+                continue
+
+            elif x == 4:
+                #update an existing order
+                OrderMenu.update_order()
+                continue        
+
+            elif x==5:
+                #delete an existing order
+                OrderMenu.delete_order()
+                continue
+            
+            else:
+                print('You have not entered a valid sub-menu number, please try again')
+                continue 
