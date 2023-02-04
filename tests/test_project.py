@@ -48,7 +48,6 @@ class DFTests(unittest.TestCase):
 def test_create_product():
     with patch('builtins.input') as mock_input:
         mock_input.side_effect = ['Juice', '0.98']
-        
         actual = create_product_csv()
         assert mock_input.call_count == 2
 
