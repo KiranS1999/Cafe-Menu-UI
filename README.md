@@ -1,20 +1,25 @@
-# Generation-Mini-Project
-Creating a cafe order, product and courier menu.
+# Cafe Management UI Via CLI
 
-How did you meet the client brief? \
--Maintained a collection of products, orders and couriers data in both CSV files and a database (MySQL) \
--Persisted and loaded data via CSV/database 
--Added feature to update the status of an order (preparing, dispatched, delivered etc.) \
--Added feature to track product inventory in the db \
--UI is clear to navigate and has option to return to main menu 
+## INTRODUCTION
 
-How did you guarantee the client requirements? \
--Tried to implement unit testing via mock/patch \
--try/except and if/else to catch errors
+Current SetUp:
+- No data management system within the cafe
+- Courier, customer, product and order data are stored together in Excel Notebook
+- Time consuming process to add information
+- Transactions do not adhere to ACID guidelines
 
-If you had more time, what is one thing you would improve upon? \
--Couriers,orders, products into classes using OOP \
--Extensively test my functions
+As an administrator of a cafe I would like to manage my courier, customer, order and product information so that I can monitor inventory and derive business metrics.
 
-What did you most enjoy implementing? \
--Creating functions and using them to make a program that has multiple features 
+### Use Case
+Title: Cafe Data Management
+Primary Actor: Administrator
+Success Scenario: Adminstrator uploads raw CSV files. CSV data is extracted, tranformed and persisted through both CSV and MySQL database (localhost). Through CLI, Adminstrator can CRUD products, orders, couriers and customers(db exclusive) through a menu system. UI is clear and intuitive. SQL can be used on db data to derive business insights.
+
+## Code Diagram
+
+
+
+## Testing
+Unit testing with unittest module
+
+
