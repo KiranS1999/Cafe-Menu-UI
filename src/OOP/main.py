@@ -1,18 +1,10 @@
 #PROGRAM: A menu system that allows user to view, create, amend and delete 
 #the products, couriers and orders for a cafe using either CSV files or a MySQL database
 
-
-#Libraries
-import csv
-import pandas as pd
-import pymysql
-import os
+from csv_functions.csv_main import MenuCSV
+from db_functions.db_main import MenuDB
 from time import sleep
-from dotenv import load_dotenv
-from csv_functions.csv_load import load_product_data, load_courier_data, load_order_data
-from csv_functions.csv_main  import product_menu_csv, orders_menu_csv, couriers_menu_csv
-from db_functions.db_main import product_menu_db, order_menu_db, courier_menu_db, customer_menu_db
-
+import os
 
 #FUNCTION: clear screen
 def clear_screen():
@@ -21,34 +13,6 @@ def clear_screen():
     else:
          os.system('cls')   
 
-
-######DATABASE-RELATED FUNCTIONS######
-
-
-#SET UP DB CONNECTION
-
-
-# Load environment variables from .env file
-load_dotenv()
-host = os.environ.get("mysql_host")
-user = os.environ.get("mysql_user")
-password = os.environ.get("mysql_pass")
-database = os.environ.get("mysql_db")
-
-# Establish a database connection
-connection = pymysql.connect(
-    host,
-    user,
-    password,
-    database
-)
-
-cursor = connection.cursor()
-
-#empty list of orders,products and couriers to be written to a csv file
-orders = []
-products = [] 
-couriers = []   
 
 #### MAIN MENU FUNCTION ####
   
@@ -76,23 +40,19 @@ def mainmenu():
             [3] Orders''')
     
 
-            load_product_data()
-            load_courier_data()
-            load_order_data()
-
             user_input = int(input("Please enter menu number: "))
             
             if user_input == 0:
                 continue
 
             elif user_input == 1:
-                product_menu_csv()
+                MenuCSV.product_menu_csv()
                  
             elif user_input == 2:
-                couriers_menu_csv()
+                MenuCSV.couriers_menu_csv()
                 
             elif user_input == 3:
-                orders_menu_csv()
+                MenuCSV.orders_menu_csv()
                 
             else:
                 print('You have not entered a valid menu number, please try again')             
@@ -100,7 +60,7 @@ def mainmenu():
         elif data_store_option == 2:
 
             print ('''Main menu
-            [0] Exit Database
+            [0] Return to Mani Menu
             [1] Products
             [2] Couriers
             [3] Orders
@@ -110,22 +70,19 @@ def mainmenu():
             user_input = int(input("Please enter menu number: "))
             
             if user_input == 0:
-                #exit database
-                cursor.close()
-                connection.close()
-                print('You have successfully closed the connection to the database!')            
+                continue
 
             elif user_input == 1:
-                product_menu_db()
+                MenuDB.product_menu_db()
 
             elif user_input == 2:
-                courier_menu_db()
+                MenuDB.courier_menu_db()
                 
             elif user_input == 3:
-                order_menu_db()
+                MenuDB.order_menu_db()
             
             elif user_input == 4:
-                customer_menu_db()           
+                MenuDB.customer_menu_db()           
     
             else:
                     print('You have not entered a valid menu number, please try again') 
