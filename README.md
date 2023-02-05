@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Client has a created a pop-up cafe within a busy business district. They off a variety of products, with menu changes on a day to day basis. Although they only currently have one store, they want a way to log and track thier transactions to support thier upscale.
+Client has a created a pop-up cafe within a busy business district. They offer a variety of products, with menu changes on a day to day basis. Although they only currently have one store, they want a way to log and track their transactions to support thier upscale.
 
 ## Project Background
 Current SetUp:
@@ -15,14 +15,14 @@ User Story:
 As an administrator of a cafe I would like to persist my courier, customer, order and product information so that I can monitor inventory and derive business metrics.
 
 ### Use Case
-Title: Cafe Data Management
-Primary Actor: Administrator
-Success Scenario: 
+- Title: Cafe Data Management 
+- Primary Actor: Administrator
+- Success Scenario: 
 1. Adminstrator uploads raw CSV files. 
 2. CSV data is extracted, tranformed and persisted through both CSV and MySQL database (localhost). 
 3. Through CLI, Adminstrator can CRUD products, orders, couriers and customers(db exclusive) through a menu system. 
 4. UI is clear and intuitive. 
-5. User's name, thier action (i.e CRUD) and the specific date is logged.
+5. User's name, their action (i.e CRUD) and the specific date is logged.
 6. SQL can be used on DB data to derive business insights.
 
 ## Code 
