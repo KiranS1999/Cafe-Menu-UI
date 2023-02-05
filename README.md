@@ -37,13 +37,18 @@ Both Functional Programming (FP) and Object Orientated Programming (OOP)
 Unit testing with pythons' unittest module
 
 ## Start: CSV
-- cd src\functional
-- py main.py
+1. cd src\OOP
+2. py main.py
+3. Select CSV Menu
 
 ## Start: DB
-- create .env file with mysql host, user, password and db name (example in docker\.env)
+1. create .env file with mysql host, user, password and db name (example in docker\.env)
+2. cd docker
 
-- Set up database tables
+3. To run MySQL/Adminer services:
+- docker-compose up 
+4. URL: http://localhost:8080/
+5. Sign in with .env details and set up database tables
     - products: 
         columns: id(primary key: autoincrement), name, price
     - couriers:
@@ -51,6 +56,7 @@ Unit testing with pythons' unittest module
     - orders:
         columns: id, customer_name, customer_address, customer_phone, courier (foreign key: couriers.id), products(foreign key: products.id)
 
-- cd src\OOP
-- py main.py
+6. cd src\OOP
+7. py main.py
+8. Select DB Menu
 
