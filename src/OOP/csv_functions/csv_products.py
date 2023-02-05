@@ -8,47 +8,69 @@ from datetime import date
 
 class ProductLog:
     def __init__(self):
-        '''Initialise the product.
         '''
+        Initialise the product.
+        '''
+
         self.name = input('Please enter your name: ')
         self.date = self.current_date()
         self.action = '*No Action*'
 
     def update_product_log(self, new_product: str, new_price: float):
-        '''Update product name and price.
+        '''
+        Update product name and price.
         Arg:
             name: new product name
-            price: new product price'''  
+            price: new product price
+        '''  
+
         self.action = f"Updated an item: name:{new_product}, price: {new_price}"
 
     def create_product_log(self, product: str, price: float):
-        '''Log new product creation'''
+        '''
+        Log new product creation
+        '''
+
         self.action = f"Created {product}:{price}"
 
     def delete_product_log(self, product: str):
-        '''Log product deletion'''
+        '''
+        Log product deletion
+        '''
+
         self.action = f"Deleted {product}"
    
     def current_date(self):
+        '''
+        Return the current date in YYYY/MM/DD
+        '''
+
         today = str(date.today())
         return today   
 
     def useraccess(self):
+        '''
+        Return string to be entered into log file
+        '''
+
         return f"\n {self.name} {self.action} at {self.date}"
 
     def writelog(self):
+        '''
+        Write to log file: log users' name, action and date
+        '''
+
         with open("log.txt", "a") as file:
             log = self.useraccess()
             file.write(log)
             print('Successfully logged action!')
         
 
-
-        
-
 class ProductMenu(ProductLog, SaveLoad):
-    '''Class ProductMenu implemets a product mennu with a fucntionality to CRUD products 
-        and save them to a CSV'''
+    '''
+    Class ProductMenu implemets a product mennu with a fucntionality to CRUD products 
+    and save them to a CSV
+    '''
     def __init__(self, filename: str):
         ProductLog.__init__(self)
         SaveLoad.__init__(self, filename)
@@ -62,9 +84,11 @@ class ProductMenu(ProductLog, SaveLoad):
         return super().save_data(fieldnames =['Product', 'Price'], info_type = self.product_list )    
 
     def view_products(self):
-        '''Display products that have been loaded
+        '''
+        Display products that have been loaded
         Returns:
-            dataframe of current products'''
+            dataframe of current products
+        '''
         
         print('Product information:')
         try:
@@ -75,9 +99,11 @@ class ProductMenu(ProductLog, SaveLoad):
             raise Exception
 
     def create_product(self):
-        '''User input to create a new product
+        '''
+        User input to create a new product
         Returns: 
-        Boolean value indicating if product has been successfully added or not'''
+        Boolean value indicating if product has been successfully added or not
+        '''
         
         new_prod = input('Please enter your product name: ').title()
         new_price = input('Please enter the price: ')
@@ -94,10 +120,9 @@ class ProductMenu(ProductLog, SaveLoad):
         return True    
         
     def update_product(self):
-        '''Updates existing product
-        
+        '''
+        Updates existing product
         Returns:
-        
         Boolean value indicating if product has been successfully added or not 
         '''
         
@@ -130,7 +155,10 @@ class ProductMenu(ProductLog, SaveLoad):
         return True
 
     def delete_product(self):
-            
+        '''
+        Deletes existing product
+        '''
+                    
         try:
             user_index = int(input('Index value of the product you wish to delete: '))    
             del self.product_list[user_index]
@@ -143,14 +171,5 @@ class ProductMenu(ProductLog, SaveLoad):
         super().delete_product_log(self.product_list[user_index])
 
 
-x = ProductMenu('products.csv')
-print(x.useraccess())
-x.view_products()
-x.create_product()
-print(x.useraccess())
-x.writelog()
-x.save_data()
-x.load_data()
-x.view_products()
 
 

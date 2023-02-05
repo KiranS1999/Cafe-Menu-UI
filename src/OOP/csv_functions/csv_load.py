@@ -11,12 +11,16 @@ class UserLog:
     date: str = field(default_factory=('No Date'))
 
 
-
 class SaveLoad:
+    '''Class to load and save data to CSV'''
     def __init__(self, filename: str):
         self.filename = filename
     
     def load_data (self, info_type):
+        '''
+        Loads CSV data as a Dict within list
+        '''
+
         try:
             with open(self.filename, "r", newline = '') as file:
                 file = csv.DictReader(file)
@@ -27,6 +31,10 @@ class SaveLoad:
             raise Exception    
 
     def save_data (self, info_type, fieldnames=[]):
+        '''
+        Writes changes to CSV file
+        '''
+
         try:
             with open(self.filename, "w", newline = '') as file:
                 w = csv.DictWriter(file, fieldnames)

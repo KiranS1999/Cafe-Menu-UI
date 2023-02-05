@@ -7,20 +7,22 @@ from csv_couriers import CourierMenu
 from csv_products import ProductMenu
 
 
-
-
-#### MAIN PRODUCT CSV MENU ####
 class MenuCSV:
 
     def __init__(self):
-        '''Initialise the CSV Menu Object'''
+        '''
+        Initialise the CSV Menu Object
+        '''
 
         self.products = ProductMenu()
         self.couriers = CourierMenu()
         self.orders = OrderMenu()
 
     def main_csv(self):
-        
+        '''
+        Main CSV Menu loop
+        '''
+
         while True:
             print ('''Main menu
             [0] Return to Main Menu
@@ -46,6 +48,9 @@ class MenuCSV:
                 print('You have not entered a valid menu number, please try again')             
 
     def product_menu_csv(sself):
+        '''
+        Product Menu loop for CSV option
+        '''
 
         while True:
             print('''Product Menu: 
@@ -85,9 +90,11 @@ class MenuCSV:
                 print('You have not entered a valid sub-menu number, please try again')
                 continue 
 
-    #### MAIN COURIERS CSV MENU ####
     def couriers_menu_csv(self):
-
+        '''
+        Courier Menu loop for CSV option
+        '''
+        
         while True:    
             print('''Courier Menu:
                 [0] Return to main menu
@@ -126,9 +133,11 @@ class MenuCSV:
                 print('You have not entered a valid sub-menu number, please try again')
                 continue  
 
-    #### MAIN ORDERS CSV MENU ####
     def orders_menu_csv(self):
-
+        '''
+        Order Menu loop for CSV option
+        '''
+        
         while True:    
             print('''Order Menu:
                 [0] Return to main menu

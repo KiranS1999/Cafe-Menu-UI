@@ -8,43 +8,68 @@ from csv_load import SaveLoad
 
 class OrderLog:
     def __init__(self):
-        '''Initialise the user log info
-
         '''
+        Initialise the user log info
+        '''
+
         self.name = input('Please enter your name: ')
         self.date = self.current_date()
         self.action = '*No Action*'
 
     def update_order__status_log(self, order: str, new_status: str):
-        '''Log updated order status
+        '''
+        Log updated order status
         Arg:
             order: order info 
             old_status: previous order status
-            new_status: new status of order'''  
+            new_status: new status of order
+        '''  
+
         self.action = f"Updated an order status: Order:{order}, New Status: {new_status}"
 
     def update_order_log(self, order_changed: str):
-        '''Log affected order 
+        '''
+        Log affected order 
         Arg:
-            order: order info '''  
+            order: order info 
+        '''  
+
         self.action = f"Updated this order:{order_changed}"
 
     def create_order_log(self, customer_name, customer_address, customer_phone, courier_add, prod_index_str ):
-        '''Log order creation'''
+        '''
+        Log order creation
+        '''
+
         self.action = f"Created a new order, Name:{customer_name}, Address:{customer_address}, Phone Number:{customer_phone}, Courier Index:{courier_add}, Product Index/Indices:{prod_index_str} "
 
     def delete_order_log(self, order: str):
-        '''Log order deletion'''
+        '''
+        Log order deletion
+        '''
+
         self.action = f"Deleted {order}"
    
     def current_date(self):
+        '''
+        Return the current date in YYYY/MM/DD
+        '''
+
         today = str(date.today())
         return today   
 
     def useraccess(self):
+        '''
+        Return string to be entered into log file
+        '''        
+
         return f"\n{self.name} {self.action} at {self.date}"
 
     def writelog(self):
+        '''
+        Write to log file: log users' name, action and date
+        '''
+
         with open("log.txt", "a") as file:
             log = self.useraccess()
             file.write(log)
@@ -52,8 +77,10 @@ class OrderLog:
 
 
 class OrderMenu(OrderLog, SaveLoad):
-    '''Class OrderMenu implements a order menu with a functionality to CRUD orders
-        and save changes to a CSV'''
+    '''
+    Class OrderMenu implements a order menu with a functionality to CRUD orders
+    and save changes to a CSV
+    '''
     def __init__(self, filename: str):
         OrderLog.__init__(self)
         SaveLoad.__init__(self, filename)
@@ -67,9 +94,11 @@ class OrderMenu(OrderLog, SaveLoad):
         return super().save_data(fieldnames = ['customer_name', 'customer_address', 'customer_phone', 'courier_index', 'order_status', 'product_index'], info_type = self.order_list )    
 
     def view_order(self):
-        '''Display orders that have been loaded
+        '''
+        Display orders that have been loaded
         Returns:
-            dataframe of current orders'''
+            dataframe of current orders
+        '''
         
         print('Order information:')
         try:
@@ -113,9 +142,11 @@ class OrderMenu(OrderLog, SaveLoad):
                 continue
 
     def create_order(self):
-        '''User input to create a new order
+        '''
+        User input to create a new order
         Returns: 
-        Boolean value indicating if order has been successfully added or not'''
+        Boolean value indicating if order has been successfully added or not#
+        '''
         
         try:
             new_orders = {}
@@ -161,11 +192,10 @@ class OrderMenu(OrderLog, SaveLoad):
 
     def update_order_status(self):
         '''Updates existing orders status
-        
         Returns:
-        
         Boolean value indicating if orders' status has been successfully updated
         '''
+
         try:
             print ("Order list index-values are : ")
             self.view_order()
@@ -197,11 +227,10 @@ class OrderMenu(OrderLog, SaveLoad):
 
     def update_order(self):
         '''Updates each value of existing order
-        
         Returns:
-        
         Boolean value indicating if orders' status has been successfully updated
         '''
+
         try:
             self.view_order()
             user_index = int(input('Index value of the order you wish to change: '))    
@@ -226,6 +255,9 @@ class OrderMenu(OrderLog, SaveLoad):
             return True
             
     def delete_order(self):
+        '''
+        Deletes existing order
+        '''        
         try:
             self.view_order()
             user_index = int(input('Index value of the product you wish to delete: '))    
