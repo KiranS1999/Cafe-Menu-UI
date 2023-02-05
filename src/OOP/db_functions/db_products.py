@@ -1,10 +1,14 @@
 #PRODUCT-RELATED FUNCTIONS
 
 from db_connect import ConnectDB
-#FUNCTION: view all products
+
 class ProductDB(ConnectDB):
 
     def view_products(self):
+        '''
+        View current product information in the database
+        '''
+
         cursor, connection = super().connect()
         print('The current product information:')
         cursor.execute('SELECT * FROM products')
@@ -13,8 +17,11 @@ class ProductDB(ConnectDB):
             print(f'Name: {(row[1])}, Price: {row[2]}')
         print()    
 
-    #FUNCTION: create a new product
     def create_product(self):
+        '''
+        Create a new product then insert into table
+        '''
+
         cursor, connection = super().connect()
         newprod = input('Please enter your new product name: ')
         newprice = input('Please enter the price: ')
@@ -29,8 +36,11 @@ class ProductDB(ConnectDB):
         cursor.execute(sql, val)
         connection.commit()
         
-    #FUNCTION: update a product
     def update_product(self):
+        '''
+        Update a product that exists within the database
+        '''
+
         cursor, connection = super().connect()
         available_ids = []
         
@@ -85,8 +95,11 @@ class ProductDB(ConnectDB):
                 print('You have selected an invalid product ID, please try again!')    
                 continue
 
-    #FUNCTION: delete a product
     def delete_product(self):
+        '''
+         Delete a product and its references within all tables
+        '''
+
         cursor, connection = super().connect()
         available_ids = []
 
@@ -133,8 +146,11 @@ class ProductDB(ConnectDB):
                 print('You have selected an invalid product ID, please try again!')
                 continue
 
-    #FUNCTION: track product inventory
     def track_prod_inventory(self):
+        '''
+        Track product inventory: New, Updated, Added to Orders, Deleted
+        '''
+
         cursor, connection = super().connect()
         #view current product list
         print("The current product list is as follows: ")

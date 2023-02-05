@@ -3,7 +3,12 @@
 from db_connect import ConnectDB
 
 class CustomerDB(ConnectDB):
+
     def view_customer_list(self):
+        '''
+        View current courier information in the database
+        '''
+
         cursor, connection = super().connect()
         print('The current customer information:')
         cursor.execute('SELECT * FROM customers')
@@ -12,8 +17,11 @@ class CustomerDB(ConnectDB):
             print(f'Name: {(row[1])}, Order ID: {row[2]}')
 
     def update_customer_list(self):
-        #view discrepancy in customers in orders list and customers in customer list
-        #shows customers that are in orders but not in customer list yet
+        '''
+        View discrepancy in customer data in orders list customer list
+        Customers that are in orders but not in customer list yet are added 
+        '''
+
         cursor, connection = super().connect()
     
         cursor.execute('''SELECT id, name FROM orders as od
@@ -44,8 +52,11 @@ class CustomerDB(ConnectDB):
                 print('You have selected an invalid option, please try again!')           
                 continue
   
-
     def delete_customer_list(self):
+        '''
+        Delete a specific customer
+        '''
+
         cursor, connection = super().connect()
         del_ids = []
         cursor.execute('SELECT ID, name, order_id FROM customers') 

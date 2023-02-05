@@ -1,9 +1,14 @@
 #ORDER-RELATED FUCNTIONS
 
 from db_connect import ConnectDB
-#FUNCTION: sort and view orders
+
 class OrderDB(ConnectDB):
+
     def view_orders(self):
+        '''
+        View current order information in the database
+        '''
+
         cursor, connection = super().connect()
         print('The current order information:')
         cursor.execute('''SELECT orders.name, orders.address, orders.phone, orders.courier, ordered_products.product, ordered_products.quantity, order_status.order_status
@@ -20,6 +25,10 @@ class OrderDB(ConnectDB):
             print(f'Name: {(row[0])}, Address: {row[1]}, Phone Number: {row[2]}, Courier: {row[3]}, Product:{row[4]}, Quantity: {row[5]}, Order Status: {row[6]} ')
         
     def sort_orders(self):
+        '''
+        Sort and view orders on customer name or status
+        '''
+
         cursor, connection = super().connect()
         list_orders= ['Customer', 'Status', 'Courier']
         list_options = ['0','1','2']
@@ -84,8 +93,11 @@ class OrderDB(ConnectDB):
                 print('You have selected an invalid option ID, please try again!')
                 continue   
 
-    #FUNCTION: create a new order
     def new_order(self):
+        '''
+        Create a new order and insert into database
+        '''
+
         cursor, connection = super().connect()
         courier_ids = []
         customer_name = input('Please type the customer name: ')
@@ -150,10 +162,12 @@ class OrderDB(ConnectDB):
             elif add_prod_input not in product_ids:
                 print('You have selected an invalid product ID, please try again!')
                 continue 
-            
-                
-    #FUNCTION: update the order status of a product
+                        
     def update_order_status(self):
+        '''
+        Update the status of a particular order
+        '''
+
         cursor, connection = super().connect()
         #print order list with ids
         print ("Order list index-values are : ")
@@ -198,9 +212,11 @@ class OrderDB(ConnectDB):
                 print('You have not selected a valid status id, please try again!')
                 continue
     
-
-    #FUNCTION: update entire order
     def update_full_order(self):
+        '''
+        Update each value of existing order
+        '''
+
         cursor, connection = super().connect()
         #print order list with ids
         order_ids = []
@@ -259,8 +275,11 @@ class OrderDB(ConnectDB):
                 except:
                     print('Oops!You have entered an id that is not in our database. Please try again!')        
 
-    #FUNCTION: delete order
     def del_order(self):
+        '''
+        Delete an order and its references within all database tables
+        '''
+
         cursor, connection = super().connect()
         del_ids = []
         cursor.execute('SELECT * FROM orders') 

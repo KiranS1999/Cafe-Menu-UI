@@ -6,10 +6,14 @@ from db_couriers import CourierDB
 from db_products import ProductDB
 from db_customers import CustomerDB
 
-#### MAIN PRODUCT MENU FUNCTION ####
+
 class MenuDB:
 
     def product_menu_db():
+        '''
+        Product Menu loop for DB option
+        '''
+
         while True:
             print('''Product Menu:
                     [0] Return to main menu
@@ -52,8 +56,11 @@ class MenuDB:
                 print('You have not entered a valid sub-menu number, please try again')
                 continue 
 
-    #### MAIN COURIER MENU FUNCTION ####
     def courier_menu_db():
+        '''
+        Courier Menu loop for DB option
+        '''
+
         while True:
             print('''Courier Menu:
                         [0] Return to main menu
@@ -91,9 +98,12 @@ class MenuDB:
             else:
                 print('You have not entered a valid sub-menu number, please try again')
                 continue
-
-    #### MAIN ORDER MENU FUNCTION ####            
+        
     def order_menu_db():
+        '''
+        Order Menu loop for DB option
+        '''
+
         while True:
             print('''Order Menu:
                         [0] Return to main menu
@@ -137,8 +147,11 @@ class MenuDB:
                 print('You have not entered a valid sub-menu number, please try again')
                 continue
 
-    #### MAIN CUSTOMER MENU FUNCTION ####
-    def customer_menu_db():    
+    def customer_menu_db(): 
+        '''
+        Customer Menu loop for DB option
+        '''   
+
         while True:
             print('''Customer Menu:
                         [0] Return to main menu

@@ -1,9 +1,13 @@
 #COURIER-RELATED FUNCTIONS
 
 from db_connect import ConnectDB
-#FUNCTION: view all couriers
+
 class CourierDB(ConnectDB):    
     def view_couriers(self):
+        '''
+        View current courier information in the database
+        '''
+        
         cursor, connection = super().connect()
         print('The current courier information:')
         cursor.execute('SELECT * FROM couriers')
@@ -11,8 +15,11 @@ class CourierDB(ConnectDB):
         for row in rows:
             print(f'Name: {str(row[1])}, Phone Number: {row[2]}')
 
-    #FUNCTION: create a new courier
     def new_courier(self):
+        '''
+        Create a new courier then insert into table
+        '''
+        
         cursor, connection = super().connect()
         new_courier= input('What is the name of the new courier?: ')
         new_phone = input('Please enter their phone number: ')
@@ -21,8 +28,11 @@ class CourierDB(ConnectDB):
         cursor.execute(sql, val)
         connection.commit()
     
-    #FUNCTION: update a courier
     def update_courier(self):
+        '''
+        Update a courier that exists within the db
+        '''
+
         cursor, connection = super().connect()
         available_ids = []
 
@@ -62,8 +72,11 @@ class CourierDB(ConnectDB):
                 print('You have selected an invalid courier ID, please try again!')
                 continue
     
-    #FUNCTION: delete a courier #fix, works without try
     def del_courier(self): 
+        '''
+        Delete a courier and its references within all tables
+        '''
+
         cursor, connection = super().connect()
         available_ids = [] 
         

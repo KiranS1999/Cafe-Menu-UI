@@ -6,8 +6,11 @@ from dotenv import load_dotenv
 
 class ConnectDB:
     
-    def __init__(self) -> None:
-        # Initialise environment variables from .env file
+    def __init__(self):
+        '''
+        Initialise environment variables from .env file
+        '''
+
         load_dotenv()
         self.host = os.environ.get("mysql_host")
         self.user = os.environ.get("mysql_user")
@@ -15,7 +18,11 @@ class ConnectDB:
         self.database = os.environ.get("mysql_db")
 
     def connect(self):
-        # Establish a database connection
+        '''
+        Establish a database connection
+        Return: cursor, connection
+        '''
+        
         connection = pymysql.connect(
             self.host,
             self.user,
