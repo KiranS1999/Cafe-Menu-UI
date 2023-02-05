@@ -18,42 +18,38 @@ As an administrator of a cafe I would like to persist my courier, customer, orde
 Title: Cafe Data Management
 Primary Actor: Administrator
 Success Scenario: 
-1.Adminstrator uploads raw CSV files. 
-2.CSV data is extracted, tranformed and persisted through both CSV and MySQL database (localhost). 
-3.Through CLI, Adminstrator can CRUD products, orders, couriers and customers(db exclusive) through a menu system. 
-4.UI is clear and intuitive. 
-5.User's name, thier action (i.e CRUD) and the specific date is logged.
-6.SQL can be used on DB data to derive business insights.
+1. Adminstrator uploads raw CSV files. 
+2. CSV data is extracted, tranformed and persisted through both CSV and MySQL database (localhost). 
+3. Through CLI, Adminstrator can CRUD products, orders, couriers and customers(db exclusive) through a menu system. 
+4. UI is clear and intuitive. 
+5. User's name, thier action (i.e CRUD) and the specific date is logged.
+6. SQL can be used on DB data to derive business insights.
 
 ## Code 
 Both Functional Programming (FP) and Object Orientated Programming (OOP)
-
-To utilise the FP code, run  src\functional\main.py 
-
-To utilise OOP code, run src\OOP\main.py
 
 ### OOP Class diagram
 
 
 
 ## Testing
-Unit testing with unittest module
+Unit testing with pythons' unittest module
 
 ## Start: CSV
-.cd src\functional
-.py main.py
+- cd src\functional
+- py main.py
 
 ## Start: DB
-. create .env file with mysql host, user, password and db name (example in docker\.env)
+- create .env file with mysql host, user, password and db name (example in docker\.env)
 
-.Set up database tables
-    -products: 
+- Set up database tables
+    - products: 
         columns: id(primary key: autoincrement), name, price
-    -couriers:
+    - couriers:
         columns: id(primary key: autoincrement), phone, name
-    -orders:
+    - orders:
         columns: id, customer_name, customer_address, customer_phone, courier (foreign key: couriers.id), products(foreign key: products.id)
 
-.cd src\OOP
-.py main.py
+- cd src\OOP
+- py main.py
 
