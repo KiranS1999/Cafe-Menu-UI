@@ -30,6 +30,7 @@ Both Functional Programming (FP) and Object Orientated Programming (OOP)
 
 ### OOP Class diagram
 
+![ClassDiagram](https://user-images.githubusercontent.com/114569343/216828196-496b1ade-8390-418a-b021-4bf6cbb7b2c2.png)
 
 
 ## Testing
