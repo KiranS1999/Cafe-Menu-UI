@@ -134,12 +134,3 @@ class CourierMenu(CourierLog, SaveLoad):
   
         super().delete_product_log(self.product_list[user_index])
 
-x = CourierMenu('couriers.csv','Matt')
-print(x.useraccess())
-x.view_courier()
-x.create_couriers()
-print(x.useraccess())
-x.writelog()
-x.save_data()
-x.load_data()
-x.view_courier()

@@ -45,7 +45,7 @@ class MenuCSV:
             else:
                 print('You have not entered a valid menu number, please try again')             
 
-    def product_menu_csv():
+    def product_menu_csv(sself):
 
         while True:
             print('''Product Menu: 
@@ -86,7 +86,7 @@ class MenuCSV:
                 continue 
 
     #### MAIN COURIERS CSV MENU ####
-    def couriers_menu_csv():
+    def couriers_menu_csv(self):
 
         while True:    
             print('''Courier Menu:
@@ -127,7 +127,7 @@ class MenuCSV:
                 continue  
 
     #### MAIN ORDERS CSV MENU ####
-    def orders_menu_csv():
+    def orders_menu_csv(self):
 
         while True:    
             print('''Order Menu:

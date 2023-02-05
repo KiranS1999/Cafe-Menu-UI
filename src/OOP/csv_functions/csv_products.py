@@ -93,7 +93,6 @@ class ProductMenu(ProductLog, SaveLoad):
         super().create_product_log(new_prod, new_price)
         return True    
         
-
     def update_product(self):
         '''Updates existing product
         

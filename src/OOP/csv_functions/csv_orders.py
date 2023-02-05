@@ -240,14 +240,4 @@ class OrderMenu(OrderLog, SaveLoad):
             return True    
             
 
-x = OrderMenu('orders.csv', 'Sam')
-print(x.useraccess())   
-x.view_order()
-x.create_order()
-print(x.useraccess())
-x.writelog()
-x.save_data()
-x.load_data()
-x.view_order()
-
 
