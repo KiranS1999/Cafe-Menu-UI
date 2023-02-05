@@ -26,7 +26,8 @@ As an administrator of a cafe I would like to persist my courier, customer, orde
 6. SQL can be used on DB data to derive business insights.
 
 ## Code 
-Both Functional Programming (FP) and Object Orientated Programming (OOP)
+- Functional Programming (FP): src\functional 
+- Object Orientated Programming (OOP): src\OOP
 
 ### OOP Class diagram
 
