@@ -1,5 +1,7 @@
-#CUSTOMER_RELATED FUNCTIONS (CRUD customer list)
+#### CUSTOMER_RELATED CLASS ####
 
+
+# Import DB Connection Class
 from db_connect import ConnectDB
 
 class CustomerDB(ConnectDB):

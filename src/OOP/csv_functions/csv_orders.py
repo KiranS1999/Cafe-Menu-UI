@@ -1,7 +1,11 @@
-#ORDER-RELATED FUCNTIONS#
+#### ORDER-RELATED CLASSES ####
 
+
+# Import Libraries
 import pandas as pd 
 from datetime import date
+
+# Import SaveLoad and Product Class
 from csv_products import ProductMenu
 from csv_load import SaveLoad
     

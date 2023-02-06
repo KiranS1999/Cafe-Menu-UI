@@ -1,6 +1,9 @@
-#ORDER-RELATED FUCNTIONS
+#### ORDER-RELATED CLASS ####
 
+
+# Import DB Connection Class
 from db_connect import ConnectDB
+
 
 class OrderDB(ConnectDB):
 

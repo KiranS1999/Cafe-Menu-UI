@@ -1,6 +1,9 @@
-#PRODUCT-RELATED FUNCTIONS
+#### PRODUCT-RELATED CLASS ####
 
+
+# Import DB Connection Class
 from db_connect import ConnectDB
+
 
 class ProductDB(ConnectDB):
 

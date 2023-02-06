@@ -1,6 +1,7 @@
-#DATABASE specifc functions referenced in current_project.py, cafe project
+#### MAIN DATABASE MENU CLASS ####
 
-#import libraries
+
+# Import Order, Product, Customer and Courier Classes
 from db_orders import OrderDB
 from db_couriers import CourierDB
 from db_products import ProductDB

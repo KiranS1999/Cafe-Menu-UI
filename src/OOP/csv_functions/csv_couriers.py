@@ -1,11 +1,14 @@
-#COURIER-RELATED FUNCTIONS#
+#### COURIER-RELATED CLASSES ####
 
+
+# Import Libraries
 import pandas as pd 
 from datetime import date
+
+# Import SaveLoad Class
 from csv_load import SaveLoad
 
     
-
 class CourierLog:
     def __init__(self):
         '''
@@ -64,8 +67,8 @@ class CourierLog:
             log = self.useraccess()
             file.write(log)
             print('Successfully logged action!')
-   
-        
+
+
 class CourierMenu(CourierLog, SaveLoad):
     '''
     Class CourierMenu implemets a courier menu with a functionality to CRUD couriers

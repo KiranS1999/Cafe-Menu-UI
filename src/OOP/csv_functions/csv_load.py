@@ -1,7 +1,10 @@
-#### LOADING/SAVING CSV FILE ####
+#### LOADING/SAVING CSV FILE CLASS ####
 
+
+# Import Libraries
 import csv
 from dataclasses import dataclass, field
+
 
 @dataclass
 class UserLog:

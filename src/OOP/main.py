@@ -1,10 +1,16 @@
 #PROGRAM: A menu system that allows user to view, create, amend and delete 
-#the products, couriers and orders for a cafe using either CSV files or a MySQL database
+#the products, couriers and orders for a cafe using either CSV files or a MySQL database to persist data 
 
+
+# Import Main Menu Classes (CSV and DB)
 from csv_functions.csv_main import MenuCSV
 from db_functions.db_main import MenuDB
+
+
+# Import libraries
 from time import sleep
 import os
+
 
 #FUNCTION: clear screen
 def clear_screen():
@@ -14,8 +20,7 @@ def clear_screen():
          os.system('cls')   
 
 
-#### MAIN MENU FUNCTION ####
-  
+#### MAIN MENU FUNCTION ####  
 def mainmenu():
     while True:
         sleep(2)

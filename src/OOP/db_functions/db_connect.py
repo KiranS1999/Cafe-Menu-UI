@@ -1,4 +1,7 @@
+#### DATABASE CONNECTION CLASS ####
 
+
+# Import Libraries
 import pymysql
 import os
 from dotenv import load_dotenv

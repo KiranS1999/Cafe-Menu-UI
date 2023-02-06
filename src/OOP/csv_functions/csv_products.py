@@ -1,9 +1,12 @@
-#PRODUCT-RELATED FUNCTIONS#
+#### PRODUCT-RELATED CLASSES ####
 
-from csv_load import SaveLoad
+
+# Import Libraries
 import pandas as pd
 from datetime import date
 
+# Import SaveLoad Class
+from csv_load import SaveLoad
 
 
 class ProductLog:

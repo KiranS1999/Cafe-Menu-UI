@@ -1,5 +1,7 @@
-#COURIER-RELATED FUNCTIONS
+#### COURIER DB CLASS ####
 
+
+# Import DB Connection Class
 from db_connect import ConnectDB
 
 class CourierDB(ConnectDB):    

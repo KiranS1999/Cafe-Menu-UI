@@ -1,7 +1,7 @@
-#CSV specific fucntions referenced in current_project.py, cafe project
+#### MAIN CSV MENU CLASS ####
 
 
-#import libraries
+# Import Order, Courier, Product Classes
 from csv_orders import OrderMenu
 from csv_couriers import CourierMenu
 from csv_products import ProductMenu
